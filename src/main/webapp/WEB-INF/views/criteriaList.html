@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Items</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="fragments/topNav :: navbar"></div>
+
+<h4>Make Query</h4>
+<form th:action="@{/}" method="get">
+    <div>
+        <label>Low Price:</label>
+        <input type="number" min="0.0" th:name="priceLow" th:placeholder="priceLow" th:value="${param.priceLow}">
+    </div>
+    <div>
+        <label>High Price:</label>
+        <input type="number" min="0.0" th:name="priceHigh" th:placeholder="priceHigh" th:value="${param.priceHigh}">
+    </div>
+    <div>
+        <label>Color:</label>
+        <select th:name="color" type="text">
+            <option value="">Any</option>
+            <option th:each="color : ${colors}"
+                    th:value="${color.displayValue}"
+                    th:text="${color.displayValue}"
+                    th:selected="${color.getDisplayValue() == #request.getParameter('color')}"
+            >Color</option>
+        </select>
+    </div>
+    <div>
+        <label>Page Number:</label>
+        <select th:name="pageNumber" type="number">
+            <option th:each="page : ${#numbers.sequence(1, itemPage.maxPageNumber)}"
+                    th:value="${page}"
+                    th:text="${page}"
+                    th:selected="${page} == ${#request.getParameter('pageNumber')}"
+            >Page</option>
+        </select>
+    </div>
+    <div>
+        <label>Number of Elements on the Page:</label>
+        <select th:name="pageSize" type="number">
+            <option th:each="item : ${itemPage.itemsOnPage}"
+                    th:value="${item}"
+                    th:text="${item}"
+                    th:selected="${item} == ${#request.getParameter('pageSize')}"
+            ></option>
+        </select>
+    </div>
+
+    <button type="submit">Make Query</button>
+</form>
+
+<div class="container text-center">
+    <h4>Items</h4>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div th:each="item : ${criteria}" >
+            <div class="col-sm-4">
+                <div class="text-center">
+                    <a>
+                        <img th:src="@{/resources/upload/category/brand/__${item.imageUrl}__}"
+                             width="50" class="img-thumbnail"/>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Model: ' + ${item.getName()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Part Number: ' + ${item.getPartNumber()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Color: ' + ${item.getColor()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Price USD: ' + ${item.getPrice()}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

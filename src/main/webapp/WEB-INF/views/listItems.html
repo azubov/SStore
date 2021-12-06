@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Items</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script     src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="fragments/topNav :: navbar"></div>
+
+<div class="container text-center">
+    <h3>Items</h3>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div th:each="item : ${items}" >
+            <div class="col-sm-4">
+                <div class="text-center">
+                    <a>
+                        <img th:src="@{/resources/upload/category/brand/__${item.imageUrl}__}"
+                             width="50" class="img-thumbnail"/>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Model: ' + ${item.getName()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Part Number: ' + ${item.getPartNumber()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Color: ' + ${item.getColor()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Price USD: ' + ${item.getPrice()}"></span>
+                </div>
+                <div class="text-center">
+                    <span th:text="'Parent Category: ' + ${item.getCategory().getParentCategory().getName()}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
