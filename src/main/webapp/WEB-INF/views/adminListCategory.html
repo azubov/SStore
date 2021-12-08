@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="fragments/topNav :: navbar"></div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Image Url</th>
+        <th>Parent Category</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="category : ${categories}">
+        <td th:text="${category.getId()}">
+        <td th:text="${category.getName()}">
+        <td th:text="${category.getImageUrl()}">
+        <td th:text="${category.getParentCategoryName()}">
+        <td>
+            <a th:href="@{__${#httpServletRequest.requestURI}__/update/__${category.id}__}">Update</a>
+            <a th:href="@{__${#httpServletRequest.requestURI}__/delete/__${category.id}__}">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<a th:href="@{__${#httpServletRequest.requestURI}__/new}">New Category</a>
+
+</body>
+</html>

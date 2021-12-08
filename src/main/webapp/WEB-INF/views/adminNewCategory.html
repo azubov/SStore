@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="fragments/topNav :: navbar"></div>
+
+<form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post">
+
+    <p>Name</p>
+    <input type="text" th:field="*{name}">
+    <p>Image Url</p>
+    <input type="text" th:field="*{imageUrl}">
+    <p>Parent Category</p>
+    <select name="parentName">
+        <option>Any</option>
+        <option th:each="category : ${categoryList}"
+                th:value="${category.getName()}"
+                th:text="${category.getName()}"
+        >Category</option>
+    </select>
+    <button type="submit">Add Category</button>
+</form>
+
+</body>
+</html>

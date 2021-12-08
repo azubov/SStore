@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Items</title>
+    <title>Admin Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -13,6 +13,10 @@
 <div th:replace="fragments/topNav :: navbar"></div>
 
 <h1>ADMIN PAGE</h1>
+
+<a href="/admin/category">Edit Category</a>
+<a href="/admin/items">Edit Items</a>
+<a href="/admin/orders">Show Orders</a>
 
 </body>
 </html>

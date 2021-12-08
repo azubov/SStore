@@ -1,9 +1,6 @@
 package ru.lanit.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,4 +14,8 @@ public class Category extends BaseEntity {
     private String imageUrl;
     @ManyToOne
     private Category parentCategory;
+
+    public String getParentCategoryName() {
+        return parentCategory != null ? parentCategory.getName() : "-";
+    }
 }

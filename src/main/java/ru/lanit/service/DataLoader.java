@@ -22,7 +22,7 @@ public class DataLoader {
     public DataLoader(CategoryService categoryService, ItemService itemService) {
         this.categoryService = categoryService;
         this.itemService = itemService;
-        loadRowsOfData(2);
+        loadRowsOfData(1);
     }
 
     private void loadRowsOfData(int rows) {
