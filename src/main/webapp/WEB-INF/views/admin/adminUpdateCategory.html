@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Update</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -13,19 +14,22 @@
 
 <form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post">
 
+    <p>Id</p>
+    <input type="text" th:value="${category.getId()}" readonly>
     <p>Name</p>
-    <input type="text" th:field="*{name}">
+    <input type="text" th:field="*{name}" th:value="${category.getName()}">
     <p>Image Url</p>
-    <input type="text" th:field="*{imageUrl}">
+    <input type="text" th:field="*{imageUrl}" th:value="${category.getImageUrl()}">
     <p>Parent Category</p>
     <select name="parentName">
         <option value="">Any</option>
-        <option th:each="category : ${categoryList}"
-                th:value="${category.getName()}"
-                th:text="${category.getName()}"
+        <option th:each="parent : ${categoryList}"
+                th:value="${parent.getName()}"
+                th:text="${parent.getName()}"
+                th:selected="${parent.getName()} == ${category.getParentCategoryName()}"
         >Category</option>
     </select>
-    <button type="submit">Add Category</button>
+    <button type="submit">Update Category</button>
 </form>
 
 </body>

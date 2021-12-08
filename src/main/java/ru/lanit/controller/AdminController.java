@@ -45,19 +45,25 @@ public class AdminController {
         return "redirect:/admin/category";
     }
 
-    @GetMapping("/category/update/{name}")
-    public String showUpdatePage(@PathVariable("name") String name, Model model) {
-        model.addAttribute("category", service.findByName(name));
+    @GetMapping("/category/update/{id}")
+    public String showUpdatePage(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("category", service.findById(id));
         model.addAttribute("categoryList", service.findAllParentCategories());
         return "admin/adminUpdateCategory";
     }
 
-    @PostMapping("/category/update")
+    @PostMapping("/category/update/{id}")
     public String update(Category category, @ModelAttribute("parentName") String parentName) {
         if (!parentName.isEmpty()) {
             category.setParentCategory(service.findByName(parentName));
         }
         service.save(category);
+        return "redirect:/admin/category";
+    }
+
+    @GetMapping("/category/delete/{id}")
+    public String delete(@PathVariable("id") Long id) {
+        service.deleteById(id);
         return "redirect:/admin/category";
     }
 
