@@ -19,7 +19,7 @@
     <input type="text" th:field="*{imageUrl}">
     <p>Parent Category</p>
     <select name="parentName">
-        <option>Any</option>
+        <option value="">Any</option>
         <option th:each="category : ${categoryList}"
                 th:value="${category.getName()}"
                 th:text="${category.getName()}"
