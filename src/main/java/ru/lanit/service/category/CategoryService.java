@@ -11,6 +11,7 @@ public interface CategoryService {
     Category findById(Long id);
     List<Category> findAll();
     void deleteById(Long id);
+    void delete(Category category);
     Category findByName(String name);
     List<Category> findAllParentCategories();
     List<Category> findAllSubsByParentCategory(Category parentCategory);

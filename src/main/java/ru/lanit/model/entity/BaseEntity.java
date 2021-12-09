@@ -1,6 +1,8 @@
 package ru.lanit.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

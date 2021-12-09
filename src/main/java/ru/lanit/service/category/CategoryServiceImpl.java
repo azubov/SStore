@@ -47,6 +47,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void delete(Category category) {
+        repository.delete(category);
+    }
+
+    @Override
     public Category findByName(String name) {
         return repository.findAll()
                 .stream()

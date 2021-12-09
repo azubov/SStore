@@ -1,6 +1,8 @@
 package ru.lanit.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,6 +18,7 @@ public class Item extends BaseEntity {
     private String partNumber;
     private Double price;
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
     private String color;
     private String imageUrl;
