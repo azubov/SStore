@@ -1,10 +1,10 @@
-package ru.lanit.service.image;
+package ru.lanit.service.upload;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-public interface ImageService {
+public interface UploadService {
 
     void saveImage(MultipartFile imageFile) throws IOException;
 }

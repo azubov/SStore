@@ -1,4 +1,4 @@
-package ru.lanit.service.image;
+package ru.lanit.service.upload;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,28 +11,25 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
-public class ImageServiceImpl implements ImageService {
+public class UploadServiceImpl implements UploadService {
 
-//    @Autowired
-//    ServletContext context;
-
+    public static final String UPLOAD_DIRECTORY = "/WEB-INF/resources/upload/";
     private final ServletContext context;
 
     @Autowired
-    public ImageServiceImpl(ServletContext context) {
+    public UploadServiceImpl(ServletContext context) {
         this.context = context;
     }
 
     @Override
     public void saveImage(MultipartFile imageFile) throws IOException {
 
-        String folder = context.getRealPath("") + "/WEB-INF/resources/upload/";
+        String projectRootPath = context.getRealPath(".");
+        String uploadFolder = projectRootPath + UPLOAD_DIRECTORY;
+
+        Path path = Paths.get(uploadFolder + imageFile.getOriginalFilename());
+
         byte[] bytes = imageFile.getBytes();
-        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-
-        String pathString = path.toString();
-        System.out.println(pathString);
-
         Files.write(path, bytes);
     }
 }

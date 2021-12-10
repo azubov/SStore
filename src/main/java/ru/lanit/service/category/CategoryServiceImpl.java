@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-//    @Autowired
-//    ServletContext context;
-
     private final CategoryRepository repository;
 
     @Autowired
@@ -77,17 +74,5 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
-//    @Override
-//    public void saveImage(MultipartFile imageFile) throws IOException {
-//
-//        String folder = context.getRealPath("") + "/WEB-INF/resources/upload/";
-//        byte[] bytes = imageFile.getBytes();
-//        Path path = Paths.get(folder + imageFile.getOriginalFilename());
-//
-//        String pathString = path.toString();
-//        System.out.println(pathString);
-//
-//        Files.write(path, bytes);
-//    }
 }
 

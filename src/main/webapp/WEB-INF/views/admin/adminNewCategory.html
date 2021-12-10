@@ -11,29 +11,29 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{/admin/category/new}" th:object="${category}"  method="post">
+<form th:action="${imageName} ? @{/admin/category/new} : @{/admin/category/uploadImage}" method="post"
+      enctype="multipart/form-data">
 
     <p>Name</p>
-    <input type="text" th:field="*{name}">
+    <input type="text" name="categoryName" th:value="${categoryName}">
     <p>Image Url</p>
     <input th:if="${imageName}" type="text" name="imageName" th:value="${imageName}" th:placeholder="${imageName}" readonly>
     <input th:unless="${imageName}" type="text" name="imageName">
     <p>Parent Category</p>
-    <select name="parentName">
+    <select name="parentName" th:value="parentList">
         <option value="">Any</option>
-        <option th:each="category : ${categoryList}"
-                th:value="${category.getName()}"
-                th:text="${category.getName()}"
+        <option th:each="parent : ${parentList}"
+                th:value="${parent.getName()}"
+                th:text="${parent.getName()}"
+                th:selected="${parent.getName()} == ${parentName}"
         >Category</option>
     </select>
     <button type="submit">Add Category</button>
-</form>
-
-<form method="post" enctype="multipart/form-data" action="/admin/category/uploadImage">
     <input type="file" name="imageFile">
     <input type="submit" value="Upload">
 </form>
-<span  th:if="${imageName}">
+
+<span th:if="${imageName}">
     <img th:src="@{/resources/upload/__${imageName}__}">
 </span>
 

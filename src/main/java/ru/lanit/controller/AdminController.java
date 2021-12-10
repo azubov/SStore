@@ -10,6 +10,8 @@ import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -35,48 +37,27 @@ public class AdminController {
 
     @GetMapping("/category/new")
     public String showNewPage(Model model) {
-        model.addAttribute("category", new Category());
-        model.addAttribute("categoryList", categoryService.findAllParentCategories());
+        model.addAttribute("parentList", categoryService.findAllParentCategories());
         return "admin/adminNewCategory";
     }
 
-//    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //
-
     @PostMapping("/category/new")
-    public String create(Category category,
+    public String create(@ModelAttribute("categoryName") String categoryName,
                          @ModelAttribute("parentName") String parentName,
                          @RequestParam("imageName") String imageName) {
+
+        Category category = new Category();
+        category.setName(categoryName);
+        category.setImageUrl(imageName);
 
         if (!parentName.isEmpty()) {
             category.setParentCategory(categoryService.findByName(parentName));
         }
-        category.setImageUrl(imageName);
+
         categoryService.save(category);
 
         return "redirect:/admin/category";
     }
-
-//    @PostMapping("/category/uploadImage")
-//    public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
-//                                    Model model) {
-//        ModelAndView modelAndView = new ModelAndView();
-//
-//        try {
-//            categoryService.saveImage(imageFile);
-//            model.addAttribute("category", new Category());
-//            model.addAttribute("categoryList", categoryService.findAllParentCategories());
-//            model.addAttribute("imageName", imageFile.getOriginalFilename());
-//            modelAndView.setViewName("/admin/adminNewCategory");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            modelAndView.setViewName("/admin/adminNewCategory");
-//        }
-//
-//        return modelAndView;
-//    }
-
-
-    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //
 
     @GetMapping("/category/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
@@ -99,8 +80,5 @@ public class AdminController {
         categoryService.deleteById(id);
         return "redirect:/admin/category";
     }
-
-
-
 
 }
