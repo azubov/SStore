@@ -51,7 +51,6 @@ public class AdminController {
         }
         categoryService.save(category);
 
-
         return "redirect:/category";
     }
 
