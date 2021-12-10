@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
 
@@ -39,6 +40,8 @@ public class AdminController {
         return "admin/adminNewCategory";
     }
 
+//    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //
+
     @PostMapping("/category/new")
     public String create(Category category,
                                @ModelAttribute("parentName") String parentName) {
@@ -51,6 +54,29 @@ public class AdminController {
 
         return "redirect:/category";
     }
+
+    @PostMapping("/category/uploadImage")
+    public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
+                                    Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        try {
+            categoryService.saveImage(imageFile);
+            model.addAttribute("category", new Category());
+            model.addAttribute("categoryList", categoryService.findAllParentCategories());
+            model.addAttribute("imageName", imageFile.getOriginalFilename());
+            System.out.println(imageFile.getOriginalFilename());
+            modelAndView.setViewName("/admin/adminNewCategory");
+        } catch (IOException e) {
+            e.printStackTrace();
+            modelAndView.setViewName("/admin/adminNewCategory");
+        }
+
+        return modelAndView;
+    }
+
+
+    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //
 
     @GetMapping("/category/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
@@ -74,22 +100,7 @@ public class AdminController {
         return "redirect:/admin/category";
     }
 
-    @PostMapping("/category/uploadImage")
-    public String uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
-                              Model model) {
-        String returnValue = "Start";
 
-        try {
-            categoryService.saveImage(imageFile);
-            model.addAttribute("category", new Category());
-            returnValue = "success";
-        } catch (IOException e) {
-            e.printStackTrace();
-            returnValue = "error";
-        }
-
-        return returnValue;
-    }
 
 
 }
