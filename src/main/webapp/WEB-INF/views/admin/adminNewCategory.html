@@ -11,7 +11,7 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post">
+<form th:action="@{/admin/category/new}" th:object="${category}"  method="post">
 
     <p>Name</p>
     <input type="text" th:field="*{name}">
@@ -32,7 +32,7 @@
     <input type="file" name="imageFile">
     <input type="submit" value="Upload">
 </form>
-<span>
+<span  th:if="${imageName}">
     <img th:src="@{/resources/upload/__${imageName}__}">
 </span>
 
