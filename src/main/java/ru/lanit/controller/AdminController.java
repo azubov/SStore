@@ -66,7 +66,6 @@ public class AdminController {
             model.addAttribute("category", new Category());
             model.addAttribute("categoryList", categoryService.findAllParentCategories());
             model.addAttribute("imageName", imageFile.getOriginalFilename());
-            System.out.println(imageFile.getOriginalFilename());
             modelAndView.setViewName("/admin/adminNewCategory");
         } catch (IOException e) {
             e.printStackTrace();
