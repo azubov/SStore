@@ -11,26 +11,27 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{/admin/category/new}" method="post"
+<form th:action="${uploadImageName} ? @{/admin/category/new} : @{__${#httpServletRequest.requestURI}__}" method="post"
       enctype="multipart/form-data">
 
-    <p>Name</p>
+    <label>Name: </label>
     <input type="text" name="categoryName" th:value="${categoryName}">
-
-    <p>Image</p>
-    <div id="imagePreview">
-    </div>
-    <select name="imageName" id="imageName" th:value="chosenImage">
+    <br>
+    <label>Image: </label>
+    <select id="imageName" name="imageName">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${uploadedImageName}"
+                th:selected="${image} == ${uploadImageName}"
         >Image</option>
     </select>
 
-    <p>Parent Category</p>
-    <select name="parentName" th:value="parentList">
+    <div id="imagePreview">
+    </div>
+
+    <label>Parent Category: </label>
+    <select name="parentName">
         <option value="">Any</option>
         <option th:each="parent : ${parentList}"
                 th:value="${parent.getName()}"
@@ -41,7 +42,7 @@
     <button type="submit">Add Category</button>
 
     <input type="file" name="imageFile">
-    <button type="submit" th:formaction="@{/admin/category/uploadImage}">Upload</button>
+    <button type="submit" th:formaction="@{/admin/uploadImage}">Upload</button>
 
 </form>
 
@@ -50,7 +51,12 @@
         $("#imageName").change(function() {
             var src = $(this).val();
 
-            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"50\" class=\"img-thumbnail\">" : "");
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
+        });
+        $("#imageName").val(function() {
+            var src = $(this).val();
+
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
         });
     });
 </script>

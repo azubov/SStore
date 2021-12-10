@@ -26,7 +26,7 @@ public class UploadController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/admin/category/uploadImage")
+    @PostMapping("/admin/uploadImage")
     public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
                                     @ModelAttribute("categoryName") String categoryName,
                                     @ModelAttribute("parentName") String parentName) {
@@ -37,28 +37,10 @@ public class UploadController {
             uploadService.saveImage(imageFile);
             modelAndView.addObject("categoryName", categoryName);
             modelAndView.addObject("imageSet", ImageSet.getImages());
-            modelAndView.addObject("uploadedImageName", imageFile.getOriginalFilename());
+            modelAndView.addObject("uploadImageName", imageFile.getOriginalFilename());
             modelAndView.addObject("parentName", parentName);
             modelAndView.addObject("parentList", categoryService.findAllParentCategories());
             modelAndView.setViewName("/admin/adminNewCategory");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return modelAndView;
-    }
-
-    @PostMapping("/admin/update/uploadImage")
-    public ModelAndView updateImage(@RequestParam("imageFile") MultipartFile imageFile,
-                                    Category category) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        try {
-            uploadService.saveImage(imageFile);
-            modelAndView.addObject("category", category);
-            modelAndView.addObject("parentList", categoryService.findAllParentCategories());
-            modelAndView.addObject("imageName", imageFile.getOriginalFilename());
-            modelAndView.setViewName("/admin/adminUpdateCategory");
         } catch (IOException e) {
             e.printStackTrace();
         }
