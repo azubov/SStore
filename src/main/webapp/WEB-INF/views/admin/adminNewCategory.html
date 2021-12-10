@@ -18,12 +18,12 @@
     <input type="text" name="categoryName" th:value="${categoryName}">
     <br>
     <label>Image: </label>
-    <select id="imageName" name="imageName">
+    <select name="imageName" id="imageName" th:value="chosenImage">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${uploadImageName}"
+                th:selected="${image} == ${uploadedImageName}"
         >Image</option>
     </select>
 
@@ -53,11 +53,11 @@
 
             $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
         });
-        $("#imageName").val(function() {
-            var src = $(this).val();
-
-            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
-        });
+        // $("#imageName").val(function() {
+        //     var src = $(this).val();
+        //
+        //     $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
+        // });
     });
 </script>
 

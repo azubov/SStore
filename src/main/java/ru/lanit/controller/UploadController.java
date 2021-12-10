@@ -37,7 +37,7 @@ public class UploadController {
             uploadService.saveImage(imageFile);
             modelAndView.addObject("categoryName", categoryName);
             modelAndView.addObject("imageSet", ImageSet.getImages());
-            modelAndView.addObject("uploadImageName", imageFile.getOriginalFilename());
+            modelAndView.addObject("uploadedImageName", imageFile.getOriginalFilename());
             modelAndView.addObject("parentName", parentName);
             modelAndView.addObject("parentList", categoryService.findAllParentCategories());
             modelAndView.setViewName("/admin/adminNewCategory");
