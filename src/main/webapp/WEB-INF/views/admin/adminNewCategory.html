@@ -11,14 +11,24 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="${imageName} ? @{/admin/category/new} : @{/admin/category/uploadImage}" method="post"
+<form th:action="@{/admin/category/new}" method="post"
       enctype="multipart/form-data">
 
     <p>Name</p>
     <input type="text" name="categoryName" th:value="${categoryName}">
-    <p>Image Url</p>
-    <input th:if="${imageName}" type="text" name="imageName" th:value="${imageName}" th:placeholder="${imageName}" readonly>
-    <input th:unless="${imageName}" type="text" name="imageName">
+
+    <p>Image</p>
+    <div id="imagePreview">
+    </div>
+    <select name="imageName" id="imageName" th:value="chosenImage">
+        <option value="">Any</option>
+        <option th:each="image : ${imageSet}"
+                th:value="${image}"
+                th:text="${image}"
+                th:selected="${image} == ${uploadedImageName}"
+        >Image</option>
+    </select>
+
     <p>Parent Category</p>
     <select name="parentName" th:value="parentList">
         <option value="">Any</option>
@@ -29,13 +39,21 @@
         >Category</option>
     </select>
     <button type="submit">Add Category</button>
+
     <input type="file" name="imageFile">
-    <input type="submit" value="Upload">
+    <button type="submit" th:formaction="@{/admin/category/uploadImage}">Upload</button>
+
 </form>
 
-<span th:if="${imageName}">
-    <img th:src="@{/resources/upload/__${imageName}__}">
-</span>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#imageName").change(function() {
+            var src = $(this).val();
+
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"50\" class=\"img-thumbnail\">" : "");
+        });
+    });
+</script>
 
 </body>
 </html>

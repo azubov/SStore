@@ -3,6 +3,7 @@ package ru.lanit.service.upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.lanit.model.ImageSet;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;
@@ -31,5 +32,7 @@ public class UploadServiceImpl implements UploadService {
 
         byte[] bytes = imageFile.getBytes();
         Files.write(path, bytes);
+
+        ImageSet.addImage(imageFile.getOriginalFilename());
     }
 }

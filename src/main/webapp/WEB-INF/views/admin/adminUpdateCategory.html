@@ -32,5 +32,17 @@
     <button type="submit">Update Category</button>
 </form>
 
+<form method="post" enctype="multipart/form-data" action="/admin/update/uploadImage">
+    <input type="file" name="imageFile">
+    <input type="submit" value="Upload">
+</form>
+
+<span th:if="${!imageName}">
+    <img th:src="@{/resources/upload/__${category.getImageUrl()}__}">
+</span>
+<span th:if="${imageName}">
+    <img th:src="@{/resources/upload/__${imageName}__}">
+</span>
+
 </body>
 </html>

@@ -2,6 +2,7 @@ package ru.lanit.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.lanit.model.ImageSet;
 import ru.lanit.model.criteria.Color;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
@@ -23,6 +24,7 @@ public class DataLoader {
         this.categoryService = categoryService;
         this.itemService = itemService;
         loadRowsOfData(1);
+        loadImages();
     }
 
     private void loadRowsOfData(int rows) {
@@ -76,5 +78,22 @@ public class DataLoader {
                 Item.builder().name("5").partNumber("#555").price(40000.00).category(category).color(Color.BLACK.getDisplayValue()).imageUrl(category.getImageUrl()).build(),
                 Item.builder().name("7").partNumber("#777").price(50000.00).category(category).color(Color.GREEN.getDisplayValue()).imageUrl(category.getImageUrl()).build()
         ).collect(Collectors.toList()));
+    }
+
+    private void loadImages() {
+        ImageSet.addAllImages(
+                "car.jpg",
+                "moto.jpg",
+                "phone.jpg",
+                "au.jpg",
+                "bm.jpg",
+                "mb.jpg",
+                "ya.jpg",
+                "bm.jpg",
+                "su.jpg",
+                "ap.png",
+                "sa.png",
+                "xi.png"
+        );
     }
 }

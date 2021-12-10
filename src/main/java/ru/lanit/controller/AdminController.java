@@ -1,17 +1,13 @@
 package ru.lanit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
+import ru.lanit.model.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
@@ -38,6 +34,7 @@ public class AdminController {
     @GetMapping("/category/new")
     public String showNewPage(Model model) {
         model.addAttribute("parentList", categoryService.findAllParentCategories());
+        model.addAttribute("imageSet", ImageSet.getImages());
         return "admin/adminNewCategory";
     }
 

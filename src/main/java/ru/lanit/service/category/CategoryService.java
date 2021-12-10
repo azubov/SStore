@@ -1,9 +1,7 @@
 package ru.lanit.service.category;
 
-import org.springframework.web.multipart.MultipartFile;
 import ru.lanit.model.entity.Category;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface CategoryService {
@@ -17,5 +15,4 @@ public interface CategoryService {
     List<Category> findAllParentCategories();
     List<Category> findAllSubsByParentCategory(Category parentCategory);
 
-//    void saveImage(MultipartFile imageFile) throws IOException;
 }
