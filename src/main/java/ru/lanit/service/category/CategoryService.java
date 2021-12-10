@@ -17,5 +17,5 @@ public interface CategoryService {
     List<Category> findAllParentCategories();
     List<Category> findAllSubsByParentCategory(Category parentCategory);
 
-    void saveImage(MultipartFile imageFile) throws IOException;
+//    void saveImage(MultipartFile imageFile) throws IOException;
 }

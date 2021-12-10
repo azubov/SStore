@@ -56,24 +56,24 @@ public class AdminController {
         return "redirect:/admin/category";
     }
 
-    @PostMapping("/category/uploadImage")
-    public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
-                                    Model model) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        try {
-            categoryService.saveImage(imageFile);
-            model.addAttribute("category", new Category());
-            model.addAttribute("categoryList", categoryService.findAllParentCategories());
-            model.addAttribute("imageName", imageFile.getOriginalFilename());
-            modelAndView.setViewName("/admin/adminNewCategory");
-        } catch (IOException e) {
-            e.printStackTrace();
-            modelAndView.setViewName("/admin/adminNewCategory");
-        }
-
-        return modelAndView;
-    }
+//    @PostMapping("/category/uploadImage")
+//    public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
+//                                    Model model) {
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        try {
+//            categoryService.saveImage(imageFile);
+//            model.addAttribute("category", new Category());
+//            model.addAttribute("categoryList", categoryService.findAllParentCategories());
+//            model.addAttribute("imageName", imageFile.getOriginalFilename());
+//            modelAndView.setViewName("/admin/adminNewCategory");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            modelAndView.setViewName("/admin/adminNewCategory");
+//        }
+//
+//        return modelAndView;
+//    }
 
 
     //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //    //
