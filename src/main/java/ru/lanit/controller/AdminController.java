@@ -44,14 +44,16 @@ public class AdminController {
 
     @PostMapping("/category/new")
     public String create(Category category,
-                               @ModelAttribute("parentName") String parentName) {
+                         @ModelAttribute("parentName") String parentName,
+                         @RequestParam("imageName") String imageName) {
 
         if (!parentName.isEmpty()) {
             category.setParentCategory(categoryService.findByName(parentName));
         }
+        category.setImageUrl(imageName);
         categoryService.save(category);
 
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 
     @PostMapping("/category/uploadImage")

@@ -16,8 +16,8 @@
     <p>Name</p>
     <input type="text" th:field="*{name}">
     <p>Image Url</p>
-    <input th:if="${imageName}" type="text" th:field="*{imageUrl}" th:value="${imageName}" th:placeholder="${imageName}" readonly>
-    <input th:unless="${imageName}" type="text" th:field="*{imageUrl}">
+    <input th:if="${imageName}" type="text" name="imageName" th:value="${imageName}" th:placeholder="${imageName}" readonly>
+    <input th:unless="${imageName}" type="text" name="imageName">
     <p>Parent Category</p>
     <select name="parentName">
         <option value="">Any</option>

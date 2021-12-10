@@ -22,11 +22,8 @@
             <div class="col-sm-4">
                 <div class="text-center">
                     <a th:href="@{__${#httpServletRequest.requestURI}__/__${category.name}__}">
-                        <img th:src="@{/resources/upload/category/type/__${category.imageUrl}__}"
+                        <img th:src="@{/resources/upload/__${category.imageUrl}__}"
                              width="50" class="img-thumbnail"/>
-                    </a>
-                    <a>
-                        <img th:src="@{/resources/upload/au.jpg}"/>
                     </a>
                 </div>
                 <div class="text-center">
