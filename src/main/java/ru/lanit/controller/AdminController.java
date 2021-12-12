@@ -1,7 +1,6 @@
 package ru.lanit.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,8 @@ public class AdminController {
     @GetMapping("/category/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("category", categoryService.findById(id));
-        model.addAttribute("categoryList", categoryService.findAllParentCategories());
+        model.addAttribute("parentList", categoryService.findAllParentCategories());
+        model.addAttribute("imageSet", ImageSet.getImages());
         return "admin/adminUpdateCategory";
     }
 

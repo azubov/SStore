@@ -17,6 +17,7 @@
     <label>Name: </label>
     <input type="text" name="categoryName" th:value="${categoryName}">
     <br>
+
     <label>Image: </label>
     <select name="imageName" id="imageName">
         <option value="">Any</option>
@@ -42,7 +43,7 @@
     <button type="submit">Add Category</button>
 
     <input type="file" name="imageFile">
-    <button type="submit" th:formaction="@{/admin/uploadImage}">Upload</button>
+    <button type="submit" th:formaction="@{/admin/uploadImage/new}">Upload</button>
 
 </form>
 

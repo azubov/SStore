@@ -12,37 +12,60 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post">
+<form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post"
+      enctype="multipart/form-data">
 
-    <p>Id</p>
-    <input type="text" th:value="${category.getId()}" readonly>
-    <p>Name</p>
+    <label>Id</label>
+    <input type="text" th:field="*{id}" th:value="${category.getId()}" readonly>
+    <br>
+
+    <label>Name: </label>
     <input type="text" th:field="*{name}" th:value="${category.getName()}">
-    <p>Image Url</p>
-    <input type="text" th:field="*{imageUrl}" th:value="${category.getImageUrl()}">
-    <p>Parent Category</p>
+    <br>
+
+    <label>Image: </label>
+    <select name="imageName" id="imageName" th:field="*{imageUrl}">
+        <option value="">Any</option>
+        <option th:each="image : ${imageSet}"
+                th:value="${image}"
+                th:text="${image}"
+                th:selected="${image} == ${category.getImageUrl()}"
+        >Image</option>
+    </select>
+
+    <div id="imagePreview">
+    </div>
+
+    <label>Parent Category: </label>
     <select name="parentName">
         <option value="">Any</option>
-        <option th:each="parent : ${categoryList}"
+        <option th:each="parent : ${parentList}"
                 th:value="${parent.getName()}"
                 th:text="${parent.getName()}"
                 th:selected="${parent.getName()} == ${category.getParentCategoryName()}"
         >Category</option>
     </select>
     <button type="submit">Update Category</button>
-</form>
 
-<form method="post" enctype="multipart/form-data" action="/admin/update/uploadImage">
     <input type="file" name="imageFile">
-    <input type="submit" value="Upload">
+    <button type="submit" th:formaction="@{/admin/uploadImage/update}">Upload</button>
+
 </form>
 
-<span th:if="${!imageName}">
-    <img th:src="@{/resources/upload/__${category.getImageUrl()}__}">
-</span>
-<span th:if="${imageName}">
-    <img th:src="@{/resources/upload/__${imageName}__}">
-</span>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#imageName").change(function() {
+            var src = $(this).val();
+
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
+        });
+        $("#imageName").html(function() {
+            var src = $(this).val();
+
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
+        });
+    });
+</script>
 
 </body>
 </html>
