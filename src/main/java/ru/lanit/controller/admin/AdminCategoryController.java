@@ -26,9 +26,18 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/new")
-    public String showNewPage(Model model) {
-        model.addAttribute("parentList", categoryService.findAllParentCategories());
+    public String showNewPage(Model model,
+                              @ModelAttribute("categoryName") String categoryName,
+                              @ModelAttribute("uploadedImageName") String uploadedImageName,
+                              @ModelAttribute("parentName") String parentName
+                              ) {
         model.addAttribute("imageSet", ImageSet.getImages());
+        model.addAttribute("parentList", categoryService.findAllParentCategories());
+
+        model.addAttribute("categoryName", categoryName);
+        model.addAttribute("uploadedImageName", uploadedImageName);
+        model.addAttribute("parentName", parentName);
+
         return "admin/adminCategoryNew";
     }
 

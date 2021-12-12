@@ -2,11 +2,11 @@ package ru.lanit.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import ru.lanit.model.ImageSet;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.upload.UploadService;
@@ -26,29 +26,31 @@ public class UploadController {
         this.categoryService = categoryService;
     }
 
-    @PostMapping("/admin/uploadImage/new")
-    public ModelAndView uploadImage(@RequestParam("imageFile") MultipartFile imageFile,
-                                    @ModelAttribute("categoryName") String categoryName,
-                                    @ModelAttribute("parentName") String parentName) {
-
-        ModelAndView modelAndView = new ModelAndView();
-
+    @PostMapping("/admin/category/uploadImage/new")
+    public String uploadImage(Model model,
+                              @ModelAttribute("categoryName") String categoryName,
+                              @RequestParam("imageFile") MultipartFile imageFile,
+                              @ModelAttribute("parentName") String parentName
+                              ) {
         try {
             uploadService.saveImage(imageFile);
-            modelAndView.addObject("categoryName", categoryName);
-            modelAndView.addObject("imageSet", ImageSet.getImages());
-            modelAndView.addObject("uploadedImageName", imageFile.getOriginalFilename());
-            modelAndView.addObject("parentName", parentName);
-            modelAndView.addObject("parentList", categoryService.findAllParentCategories());
-            modelAndView.setViewName("admin/adminCategoryNew");
+
+            model.addAttribute("imageSet", ImageSet.getImages());
+            model.addAttribute("parentList", categoryService.findAllParentCategories());
+
+
+            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("uploadedImageName", imageFile.getOriginalFilename());
+            model.addAttribute("parentName", parentName);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return modelAndView;
+        return "admin/adminCategoryNew";
     }
 
-    @PostMapping("/admin/uploadImage/update")
+    @PostMapping("/admin/category/uploadImage/update")
     public String rateHandler(@RequestParam("imageFile") MultipartFile imageFile,
                               HttpServletRequest request) {
 
