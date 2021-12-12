@@ -60,19 +60,42 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdatePage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("category", categoryService.findById(id));
-        model.addAttribute("parentList", categoryService.findAllParentCategories());
+    public String showUpdatePage(Model model,
+                                 @PathVariable("id") Long id,
+                                 @ModelAttribute("categoryName") String categoryName,
+                                 @ModelAttribute("uploadedImageName") String uploadedImageName,
+                                 @ModelAttribute("parentName") String parentName
+                                 ) {
+
         model.addAttribute("imageSet", ImageSet.getImages());
+        model.addAttribute("parentList", categoryService.findAllParentCategories());
+        model.addAttribute("id", id);
+
+        Category category = categoryService.findById(id);
+
+        model.addAttribute("categoryName", !categoryName.isEmpty() ? categoryName : category.getName());
+        model.addAttribute("uploadedImageName", !uploadedImageName.isEmpty() ? uploadedImageName : category.getImageUrl());
+        model.addAttribute("parentName", !parentName.isEmpty() ? parentName : category.getParentCategory());
+
         return "admin/adminCategoryUpdate";
     }
 
     @PostMapping("/update/{id}")
-    public String update(Category category, @ModelAttribute("parentName") String parentName) {
+    public String update(@PathVariable("id") Long id,
+                         @ModelAttribute("categoryName") String categoryName,
+                         @ModelAttribute("imageName") String imageName,
+                         @ModelAttribute("parentName") String parentName
+                         ) {
+        Category category = categoryService.findById(id);
+        category.setName(categoryName);
+        category.setImageUrl(imageName);
+
         if (!parentName.isEmpty()) {
             category.setParentCategory(categoryService.findByName(parentName));
         }
+
         categoryService.save(category);
+
         return "redirect:/admin/category";
     }
 

@@ -12,24 +12,24 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{__${#httpServletRequest.requestURI}__}" th:object="${category}"  method="post"
+<form th:action="@{__${#httpServletRequest.requestURI}__}" method="post"
       enctype="multipart/form-data">
 
     <label>Id</label>
-    <input type="text" th:field="*{id}" th:value="${category.getId()}" readonly>
+    <input type="text" name="id" th:value="${id}" readonly>
     <br>
 
     <label>Name: </label>
-    <input type="text" th:field="*{name}" th:value="${category.getName()}">
+    <input type="text" name="categoryName" th:value="${categoryName}">
     <br>
 
     <label>Image: </label>
-    <select name="imageName" id="imageName" th:field="*{imageUrl}">
+    <select name="imageName" id="imageName">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${category.getImageUrl()}"
+                th:selected="${image} == ${uploadedImageName}"
         >Image</option>
     </select>
 
@@ -42,7 +42,7 @@
         <option th:each="parent : ${parentList}"
                 th:value="${parent.getName()}"
                 th:text="${parent.getName()}"
-                th:selected="${parent.getName()} == ${category.getParentCategoryName()}"
+                th:selected="${parent.getName()} == ${parentName}"
         >Category</option>
     </select>
     <button type="submit">Update Category</button>
