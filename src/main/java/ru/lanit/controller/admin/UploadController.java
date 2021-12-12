@@ -1,16 +1,13 @@
-package ru.lanit.controller;
+package ru.lanit.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import ru.lanit.model.ImageSet;
-import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.upload.UploadService;
 
@@ -43,7 +40,7 @@ public class UploadController {
             modelAndView.addObject("uploadedImageName", imageFile.getOriginalFilename());
             modelAndView.addObject("parentName", parentName);
             modelAndView.addObject("parentList", categoryService.findAllParentCategories());
-            modelAndView.setViewName("/admin/adminNewCategory");
+            modelAndView.setViewName("admin/adminCategoryNew");
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package ru.lanit.controller;
+package ru.lanit.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,35 +9,30 @@ import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
 
 @Controller
-@RequestMapping("/admin")
-public class AdminController {
+@RequestMapping("/admin/category")
+public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
     @Autowired
-    public AdminController(CategoryService categoryService) {
+    public AdminCategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     @GetMapping
-    public String adminPage() {
-        return "admin/adminPage";
-    }
-
-    @GetMapping("/category")
     public String showAll(Model model) {
         model.addAttribute("categories", categoryService.findAll());
-        return "admin/adminListCategory";
+        return "admin/adminCategoryList";
     }
 
-    @GetMapping("/category/new")
+    @GetMapping("/new")
     public String showNewPage(Model model) {
         model.addAttribute("parentList", categoryService.findAllParentCategories());
         model.addAttribute("imageSet", ImageSet.getImages());
-        return "admin/adminNewCategory";
+        return "admin/adminCategoryNew";
     }
 
-    @PostMapping("/category/new")
+    @PostMapping("/new")
     public String create(@ModelAttribute("categoryName") String categoryName,
                          @ModelAttribute("parentName") String parentName,
                          @RequestParam("imageName") String imageName) {
@@ -55,15 +50,15 @@ public class AdminController {
         return "redirect:/admin/category";
     }
 
-    @GetMapping("/category/update/{id}")
+    @GetMapping("/update/{id}")
     public String showUpdatePage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("category", categoryService.findById(id));
         model.addAttribute("parentList", categoryService.findAllParentCategories());
         model.addAttribute("imageSet", ImageSet.getImages());
-        return "admin/adminUpdateCategory";
+        return "admin/adminCategoryUpdate";
     }
 
-    @PostMapping("/category/update/{id}")
+    @PostMapping("/update/{id}")
     public String update(Category category, @ModelAttribute("parentName") String parentName) {
         if (!parentName.isEmpty()) {
             category.setParentCategory(categoryService.findByName(parentName));
@@ -72,7 +67,7 @@ public class AdminController {
         return "redirect:/admin/category";
     }
 
-    @GetMapping("/category/delete/{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id) {
         categoryService.deleteById(id);
         return "redirect:/admin/category";
