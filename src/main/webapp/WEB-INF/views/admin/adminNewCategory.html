@@ -11,14 +11,14 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="${uploadImageName} ? @{/admin/category/new} : @{__${#httpServletRequest.requestURI}__}" method="post"
+<form th:action="@{/admin/category/new}" method="post"
       enctype="multipart/form-data">
 
     <label>Name: </label>
     <input type="text" name="categoryName" th:value="${categoryName}">
     <br>
     <label>Image: </label>
-    <select name="imageName" id="imageName" th:value="chosenImage">
+    <select name="imageName" id="imageName">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
@@ -53,11 +53,11 @@
 
             $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
         });
-        // $("#imageName").val(function() {
-        //     var src = $(this).val();
-        //
-        //     $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
-        // });
+        $("#imageName").html(function() {
+            var src = $(this).val();
+
+            $("#imagePreview").html(src ? "<img src='/resources/upload/" + src + "' width=\"100\" class=\"img-thumbnail\">" : "");
+        });
     });
 </script>
 
