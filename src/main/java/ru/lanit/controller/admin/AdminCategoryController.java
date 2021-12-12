@@ -71,11 +71,14 @@ public class AdminCategoryController {
         model.addAttribute("parentList", categoryService.findAllParentCategories());
         model.addAttribute("id", id);
 
-        Category category = categoryService.findById(id);
+        Category categoryFromDb = categoryService.findById(id);
 
-        model.addAttribute("categoryName", !categoryName.isEmpty() ? categoryName : category.getName());
-        model.addAttribute("uploadedImageName", !uploadedImageName.isEmpty() ? uploadedImageName : category.getImageUrl());
-        model.addAttribute("parentName", !parentName.isEmpty() ? parentName : category.getParentCategory());
+        model.addAttribute("categoryName",
+                categoryName.isEmpty() ? categoryFromDb.getName() : categoryName);
+        model.addAttribute("uploadedImageName",
+                uploadedImageName.isEmpty() ? categoryFromDb.getImageUrl() : uploadedImageName);
+        model.addAttribute("parentName",
+                parentName.isEmpty() ? categoryFromDb.getParentCategory() : parentName);
 
         return "admin/adminCategoryUpdate";
     }
