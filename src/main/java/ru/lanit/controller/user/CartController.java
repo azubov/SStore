@@ -1,5 +1,6 @@
 package ru.lanit.controller.user;
 
+import org.h2.engine.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,8 +11,11 @@ import ru.lanit.model.entity.Order;
 import ru.lanit.service.item.ItemService;
 import ru.lanit.service.order.OrderService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping("/user/cart")
@@ -28,31 +32,44 @@ public class CartController {
 
     @GetMapping
     public String showAll(Model model) {
-        System.out.println(Cart.getAll().entrySet());
         model.addAttribute("cart", Cart.getAll());
         return "user/userCartList";
     }
 
     @PostMapping("/add/{id}")
-    public String add(@PathVariable("id") Long id, int quantity, Model model) {
+    public String add(@PathVariable("id") Long id, int quantity, Model model, HttpServletRequest request) {
         Item item = itemService.findById(id);
         Cart.add(item, quantity);
 
-//        model.addAttribute("id", id);
-//        model.addAttribute("quantity", quantity);
-//        model.addAttribute("cart", Cart.getAll());
+        String referer = request.getHeader("Referer");
 
-        return "redirect:/user/shopping";
+        if (referer.equals("http://localhost:8080/user/shopping")) {
+            return "redirect:/user/shopping";
+        } else {
+            return "redirect:/user/cart/";
+        }
     }
 
     @GetMapping("/order")
-    public String makeOrder(@ModelAttribute Item item, @ModelAttribute String quantity) {
-        Integer.parseInt(quantity);
-        Cart.getAll();
-        Order order = new Order();
-        orderService.save(order);
-        Cart.clear();
+    public String makeOrder(Model model) {
 
-        return "user/userItemList";
+        Order order = new Order();
+        List<Item> itemsFromCart = new ArrayList<>();
+
+        for (Map.Entry<Item, Integer> entry : Cart.getAll().entrySet()) {
+            for (int i = entry.getValue(); i > 0; i--) {
+                itemsFromCart.add(entry.getKey());
+            }
+        }
+
+        itemsFromCart.forEach(System.out::println);
+//        order.setItems(itemsFromCart);
+//
+//        orderService.save(order);
+//        Cart.clear();
+//
+//        model.addAttribute("order", orderService.getAll());
+
+        return "user/userOrderList";
     }
 }

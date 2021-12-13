@@ -15,7 +15,7 @@
 
 <div class="container">
     <div class="row">
-        <div th:each="item : ${items}" >
+        <div th:each="item : ${items}">
             <div class="col-sm-4">
                     <div class="text-center">
                         <a>
@@ -36,7 +36,7 @@
                         <span th:text="'Price USD: ' + ${item.getPrice()}"></span>
                     </div>
                 <form th:action="@{/user/cart/add/__${item.getId()}__}" method="post">
-                    <input type="number" step="1" min="0" max="10" value="0" name="quantity">
+                    <input type="number" step="1" min="0" max="10" th:value="0" name="quantity">
                     <button type="submit">Add to the Cart</button>
                 </form>
             </div>
