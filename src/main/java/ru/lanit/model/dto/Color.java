@@ -1,4 +1,4 @@
-package ru.lanit.model.criteria;
+package ru.lanit.model.dto;
 
 public enum Color {
     BLACK("Black"),

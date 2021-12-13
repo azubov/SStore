@@ -1,4 +1,4 @@
-package ru.lanit.model;
+package ru.lanit.model.dto;
 
 import java.util.Arrays;
 import java.util.HashSet;

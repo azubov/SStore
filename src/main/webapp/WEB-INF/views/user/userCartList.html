@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div th:replace="fragments/topNav :: navbar"></div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Part Number</th>
+        <th>Price</th>
+        <th>Category</th>
+        <th>Color</th>
+        <th>Image Url</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="map : ${itemsAndQuantity}">
+        <tr th:each="item : ${map.key}">
+            <td th:text="${item.getId()}">
+            <td th:text="${item.getName()}">
+            <td th:text="${item.getPartNumber()}">
+            <td th:text="${item.getPrice()}">
+            <td th:text="${item.getCategory().getName()}">
+            <td th:text="${item.getColor()}">
+            <td th:text="${item.getImageUrl()}">
+        </tr>
+        <td th:text="${map.value}">
+        <td>
+            <input type="number" step="1" min="0" max="10" th:value="${map.value}" name="quantity">
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<a th:href="@{/user/cart/order}">Make Order</a>
+
+
+</body>
+</html>

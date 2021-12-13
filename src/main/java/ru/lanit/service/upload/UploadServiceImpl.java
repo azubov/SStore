@@ -3,7 +3,7 @@ package ru.lanit.service.upload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.lanit.model.ImageSet;
+import ru.lanit.model.dto.ImageSet;
 
 import javax.servlet.ServletContext;
 import java.io.IOException;

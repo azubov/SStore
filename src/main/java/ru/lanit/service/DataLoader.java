@@ -2,8 +2,8 @@ package ru.lanit.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.lanit.model.ImageSet;
-import ru.lanit.model.criteria.Color;
+import ru.lanit.model.dto.ImageSet;
+import ru.lanit.model.dto.Color;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.service.category.CategoryService;
