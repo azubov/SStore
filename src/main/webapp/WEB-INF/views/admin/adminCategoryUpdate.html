@@ -12,7 +12,7 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{__${#httpServletRequest.requestURI}__}" method="post"
+<form th:action="@{/admin/category/update/__${id}__}" method="post"
       enctype="multipart/form-data">
 
     <label>Id</label>
@@ -48,7 +48,7 @@
     <button type="submit">Update Category</button>
 
     <input type="file" name="imageFile">
-    <button type="submit" th:formaction="@{/admin/category/uploadImage/update}">Upload</button>
+    <button type="submit" th:formaction="@{/admin/category/uploadImage/update/__${id}__}">Upload</button>
 
 </form>
 

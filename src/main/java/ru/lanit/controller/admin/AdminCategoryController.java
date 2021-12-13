@@ -78,7 +78,7 @@ public class AdminCategoryController {
         model.addAttribute("uploadedImageName",
                 uploadedImageName.isEmpty() ? categoryFromDb.getImageUrl() : uploadedImageName);
         model.addAttribute("parentName",
-                parentName.isEmpty() ? categoryFromDb.getParentCategory() : parentName);
+                parentName.isEmpty() ? categoryFromDb.getParentCategoryName() : parentName);
 
         return "admin/adminCategoryUpdate";
     }
