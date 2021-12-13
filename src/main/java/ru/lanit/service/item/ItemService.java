@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ItemService {
 
+    void save(Item item);
     void saveAll(List<Item> items);
     List<Item> findAll();
     List<Item> findAllItemsBySubCategory(String parentCategory, String subCategoryName);

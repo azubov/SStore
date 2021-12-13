@@ -68,5 +68,13 @@ public class CategoryServiceImpl implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<Category> findAllSubCategories() {
+        return repository.findAll()
+                .stream()
+                .filter(category -> category.getParentCategory() != null)
+                .collect(Collectors.toList());
+    }
+
 }
 

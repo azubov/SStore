@@ -25,6 +25,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void save(Item item) {
+        repository.save(item);
+    }
+
+    @Override
     public void saveAll(List<Item> items) {
         repository.saveAll(items);
     }

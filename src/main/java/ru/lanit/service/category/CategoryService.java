@@ -14,5 +14,6 @@ public interface CategoryService {
     Category findByName(String name);
     List<Category> findAllParentCategories();
     List<Category> findAllSubsByParentCategory(Category parentCategory);
+    List<Category> findAllSubCategories();
 
 }
