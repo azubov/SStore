@@ -10,6 +10,9 @@ import ru.lanit.model.entity.Order;
 import ru.lanit.service.item.ItemService;
 import ru.lanit.service.order.OrderService;
 
+import java.util.Map;
+import java.util.Set;
+
 @Controller
 @RequestMapping("/user/cart")
 public class CartController {
@@ -25,7 +28,8 @@ public class CartController {
 
     @GetMapping
     public String showAll(Model model) {
-        model.addAttribute("itemsAndQuantity", Cart.getAll());
+        System.out.println(Cart.getAll().entrySet());
+        model.addAttribute("cart", Cart.getAll());
         return "user/userCartList";
     }
 
@@ -33,9 +37,11 @@ public class CartController {
     public String add(@PathVariable("id") Long id, int quantity, Model model) {
         Item item = itemService.findById(id);
         Cart.add(item, quantity);
-        System.out.println(Cart.getAll().entrySet());
-        model.addAttribute("id", id);
-        model.addAttribute("quantity", quantity);
+
+//        model.addAttribute("id", id);
+//        model.addAttribute("quantity", quantity);
+//        model.addAttribute("cart", Cart.getAll());
+
         return "redirect:/user/shopping";
     }
 

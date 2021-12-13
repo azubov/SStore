@@ -20,25 +20,27 @@
         <th>Price</th>
         <th>Category</th>
         <th>Color</th>
-        <th>Image Url</th>
-        <th>Options</th>
+        <th>Image</th>
+        <th>Quantity</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="map : ${itemsAndQuantity}">
-        <tr th:each="item : ${map.key}">
-            <td th:text="${item.getId()}">
-            <td th:text="${item.getName()}">
-            <td th:text="${item.getPartNumber()}">
-            <td th:text="${item.getPrice()}">
-            <td th:text="${item.getCategory().getName()}">
-            <td th:text="${item.getColor()}">
-            <td th:text="${item.getImageUrl()}">
-        </tr>
-        <td th:text="${map.value}">
+    <tr th:each="map : ${cart}">
+        <td th:text="${map.key.getId()}">key</td>
+        <td th:text="${map.key.getName()}">key</td>
+        <td th:text="${map.key.getPartNumber()}">key</td>
+        <td th:text="${map.key.getPrice()}">key</td>
+        <td th:text="${map.key.getCategory().getName()}">key</td>
+        <td th:text="${map.key.getColor()}">key</td>
+        <td>
+            <img th:src="@{/resources/upload/__${map.key.getImageUrl()}__}"
+                 width="50" class="img-thumbnail"/>
+        </td>
         <td>
             <input type="number" step="1" min="0" max="10" th:value="${map.value}" name="quantity">
         </td>
+
+<!--        <td th:text="${map.value}">value</td>-->
     </tr>
     </tbody>
 </table>
