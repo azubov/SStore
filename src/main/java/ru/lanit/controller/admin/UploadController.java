@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lanit.model.ImageSet;
+import ru.lanit.model.criteria.Color;
 import ru.lanit.model.entity.Category;
 import ru.lanit.service.category.CategoryService;
+import ru.lanit.service.item.ItemService;
 import ru.lanit.service.upload.UploadService;
 
 import java.io.IOException;
@@ -20,15 +22,17 @@ public class UploadController {
 
     private final UploadService uploadService;
     private final CategoryService categoryService;
+    private final ItemService itemService;
 
     @Autowired
-    public UploadController(UploadService uploadService, CategoryService categoryService) {
+    public UploadController(UploadService uploadService, CategoryService categoryService, ItemService itemService) {
         this.uploadService = uploadService;
         this.categoryService = categoryService;
+        this.itemService = itemService;
     }
 
     @PostMapping("/admin/category/uploadImage/new")
-    public String uploadImage(Model model,
+    public String uploadImageCategoryNew(Model model,
                               @ModelAttribute("categoryName") String categoryName,
                               @RequestParam("imageFile") MultipartFile imageFile,
                               @ModelAttribute("parentName") String parentName
@@ -52,7 +56,7 @@ public class UploadController {
     }
 
     @PostMapping("/admin/category/uploadImage/update/{id}")
-    public String rateHandler(Model model,
+    public String uploadImagCategoryUpdate(Model model,
                               @PathVariable("id") Long id,
                               @ModelAttribute("categoryName") String categoryName,
                               @ModelAttribute("imageName") String imageName,
@@ -63,24 +67,56 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
+            model.addAttribute("imageSet", ImageSet.getImages());
+            model.addAttribute("parentList", categoryService.findAllParentCategories());
+            model.addAttribute("id", id);
+
+            Category categoryFromDb = categoryService.findById(id);
+
+            model.addAttribute("categoryName",
+                    categoryName.isEmpty() ? categoryFromDb.getName() : categoryName);
+            model.addAttribute("uploadedImageName",
+                    imageName.isEmpty() ? categoryFromDb.getImageUrl() : imageFile.getOriginalFilename());
+            model.addAttribute("parentName",
+                    parentName.isEmpty() ? categoryFromDb.getParentCategory() : parentName);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("parentList", categoryService.findAllParentCategories());
-        model.addAttribute("id", id);
-
-        Category categoryFromDb = categoryService.findById(id);
-
-        model.addAttribute("categoryName",
-                categoryName.isEmpty() ? categoryFromDb.getName() : categoryName);
-        model.addAttribute("uploadedImageName",
-                imageName.isEmpty() ? categoryFromDb.getImageUrl() : imageFile.getOriginalFilename());
-        model.addAttribute("parentName",
-                parentName.isEmpty() ? categoryFromDb.getParentCategory() : parentName);
-
         return "admin/adminCategoryUpdate";
+    }
+
+    @PostMapping("/admin/item/uploadImage/new")
+    public String uploadImageItemNew(Model model,
+                                     @ModelAttribute("itemName") String itemName,
+                                     @ModelAttribute("partNumber") String partNumber,
+                                     @ModelAttribute("price") String price,
+                                     @ModelAttribute("categoryName") String categoryName,
+                                     @ModelAttribute("chosenColor") String chosenColor,
+                                     @RequestParam("imageFile") MultipartFile imageFile
+                                     ) {
+        try {
+            uploadService.saveImage(imageFile);
+
+            model.addAttribute("itemName", itemName);
+            model.addAttribute("partNumber", partNumber);
+            model.addAttribute("price", price);
+
+            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("categoryList", categoryService.findAllSubCategories());
+
+            model.addAttribute("chosenColor", chosenColor);
+            model.addAttribute("colors", Color.values());
+
+            model.addAttribute("uploadedImageName", imageFile.getOriginalFilename());
+            model.addAttribute("imageSet", ImageSet.getImages());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return "admin/adminItemNew";
     }
 
 
