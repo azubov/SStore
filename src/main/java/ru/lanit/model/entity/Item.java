@@ -6,12 +6,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "item_table")
 public class Item extends BaseEntity {
     @NonNull
     private String name;

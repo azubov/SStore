@@ -9,6 +9,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name = "category_table")
 public class Category extends BaseEntity {
     private String name;
     private String imageUrl;

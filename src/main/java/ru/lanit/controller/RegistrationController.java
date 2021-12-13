@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.lanit.model.entity.Role;
 import ru.lanit.model.entity.User;
-import ru.lanit.repository.UserRepository;
+import ru.lanit.service.user.UserService;
 
 @Controller
 public class RegistrationController {
 
-    private final UserRepository repository;
+    private final UserService service;
 
     @Autowired
-    public RegistrationController(UserRepository repository) {
-        this.repository = repository;
+    public RegistrationController(UserService service) {
+        this.service = service;
     }
 
     @GetMapping("/registration")
@@ -28,13 +28,13 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String register(User user) {
-        repository.save(user);
+        service.save(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String users(Model model) {
-        model.addAttribute("users", repository.findAll());
+        model.addAttribute("users", service.findAll());
         return "security/users";
     }
 }

@@ -11,43 +11,27 @@
 
 <div th:replace="fragments/topNav :: navbar"></div>
 
-<form th:action="@{/user/cart/order}" method="post">
-    <table border="1">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Part Number</th>
-            <th>Price</th>
-            <th>Category</th>
-            <th>Color</th>
-            <th>Image</th>
-            <th>Quantity</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="map : ${cart}">
-            <td th:text="${map.key.getId()}">key</td>
-            <td th:text="${map.key.getName()}">key</td>
-            <td th:text="${map.key.getPartNumber()}">key</td>
-            <td th:text="${map.key.getPrice()}">key</td>
-            <td th:text="${map.key.getCategory().getName()}">key</td>
-            <td th:text="${map.key.getColor()}">key</td>
-            <td>
-                <img th:src="@{/resources/upload/__${map.key.getImageUrl()}__}"
-                     width="50" class="img-thumbnail"/>
-            </td>
-            <td>
-                <input type="number" step="1" min="0" max="10" th:value="${map.value}" name="quantity">
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <br>
-
-    <button type="submit">Make Order</button>
-
-</form>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>User Name</th>
+        <th>Items</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}">Id</td>
+        <td th:text="${order.user.name}">User Name</td>
+        <td>
+            <p th:each="item : ${order.items}">
+                <span th:text="${item.name}">Item Name</span>
+                <span th:text="${item.category.name}">Item Category Name</span>
+            </p>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
 </body>
 </html>

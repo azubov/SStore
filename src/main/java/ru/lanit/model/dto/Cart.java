@@ -10,7 +10,11 @@ public class Cart {
     private static Map<Item, Integer> items = new HashMap<>();
 
     public static void add(Item item, Integer quantity) {
-        items.put(item, quantity);
+        if (quantity == 0) {
+            items.remove(item);
+        } else {
+            items.put(item, quantity);
+        }
     }
 
     public static Map<Item, Integer> getAll() {
