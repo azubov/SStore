@@ -11,7 +11,9 @@ public interface ItemService {
 
     void save(Item item);
     void saveAll(List<Item> items);
+    Item findById(Long id);
     List<Item> findAll();
     List<Item> findAllItemsBySubCategory(String parentCategory, String subCategoryName);
     Page<Item> getItems(ItemPage itemPage, ItemSearchCriteria itemSearchCriteria);
+    void deleteById(Long id);
 }
