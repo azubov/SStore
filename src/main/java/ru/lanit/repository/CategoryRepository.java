@@ -11,9 +11,12 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findFirstByName(String name);
 
-    @Query("select c from Category c where c.parentCategory is null ")
+    @Query("select c from Category c where c.parentCategory is null")
     List<Category> findAllParentCategories();
 
     @Query("select c from Category c where c.parentCategory = ?1")
     List<Category> findAllSubsByParentCategory(Category parentCategory);
+
+    @Query("select c from Category c where c.parentCategory is not null")
+    List<Category> findAllSubCategories();
 }

@@ -8,7 +8,6 @@ import ru.lanit.repository.CategoryRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -63,10 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllSubCategories() {
-        return repository.findAll()
-                .stream()
-                .filter(category -> category.getParentCategory() != null)
-                .collect(Collectors.toList());
+        return repository.findAllSubCategories();
     }
 
 }
