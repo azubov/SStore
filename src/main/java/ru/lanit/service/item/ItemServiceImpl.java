@@ -50,11 +50,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> findAllItemsBySubCategory(String parentCategory, String subCategoryName) {
-        return repository.findAll()
-                .stream()
-                .filter(item -> item.getCategory().getName().equals(subCategoryName))
-                .filter(item -> item.getCategory().getParentCategory().getName().equals(parentCategory))
-                .collect(Collectors.toList());
+        return repository.findAllItemsBySubCategory(parentCategory, subCategoryName);
     }
 
     @Override
