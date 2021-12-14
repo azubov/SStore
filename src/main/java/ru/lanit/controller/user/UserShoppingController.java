@@ -9,12 +9,12 @@ import ru.lanit.service.item.ItemService;
 
 @Controller
 @RequestMapping("/user/shopping")
-public class ShoppingController {
+public class UserShoppingController {
 
     private final ItemService itemService;
 
     @Autowired
-    public ShoppingController(ItemService itemService) {
+    public UserShoppingController(ItemService itemService) {
         this.itemService = itemService;
     }
 

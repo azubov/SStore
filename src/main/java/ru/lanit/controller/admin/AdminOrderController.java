@@ -18,12 +18,10 @@ public class AdminOrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/order")
+    @GetMapping("/orders")
     public String getOrder(Model model) {
-
         model.addAttribute("orders", orderService.findAll());
-
-        return "user/userOrderList";
+        return "orderList";
     }
 
 }

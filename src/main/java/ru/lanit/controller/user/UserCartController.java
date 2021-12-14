@@ -13,22 +13,19 @@ import ru.lanit.service.order.OrderService;
 import ru.lanit.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/user/cart")
-public class CartController {
+public class UserCartController {
 
     private final OrderService orderService;
     private final ItemService itemService;
     private final UserService userService;
 
     @Autowired
-    public CartController(OrderService orderService, ItemService itemService, UserService userService) {
+    public UserCartController(OrderService orderService, ItemService itemService, UserService userService) {
         this.orderService = orderService;
         this.itemService = itemService;
         this.userService = userService;
@@ -41,17 +38,13 @@ public class CartController {
     }
 
     @PostMapping("/add/{id}")
-    public String add(@PathVariable("id") Long id, int quantity, Model model, HttpServletRequest request) {
+    public String add(@PathVariable("id") Long id, int quantity, HttpServletRequest request) {
+
         Item item = itemService.findById(id);
         Cart.add(item, quantity);
 
         String referer = request.getHeader("Referer");
-
-        if (referer.equals("http://localhost:8080/user/shopping")) {
-            return "redirect:/user/shopping";
-        } else {
-            return "redirect:/user/cart/";
-        }
+        return "redirect:" + referer;
     }
 
     @GetMapping("/order")
@@ -69,8 +62,13 @@ public class CartController {
 
         Cart.clear();
 
-        model.addAttribute("orders", orderService.findAllByUser(currentUser));
+        return "redirect:/user/cart/orders";
+    }
 
-        return "user/userOrderList";
+    @GetMapping("/orders")
+    public String showOrders(Model model) {
+        User currentUser = userService.getCurrentUser();
+        model.addAttribute("orders", orderService.findAllByUser(currentUser));
+        return "orderList";
     }
 }
