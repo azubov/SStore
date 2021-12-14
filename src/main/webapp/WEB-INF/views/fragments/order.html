@@ -1,0 +1,7 @@
+<div th:fragment="order">
+    <form th:action="@{/user/cart/add/__${item.getId()}__}" method="post">
+        <input type="number" step="1" min="0" max="10" th:value="0" name="quantity">
+        <button type="submit">Add to the Cart</button>
+    </form>
+</div>
+

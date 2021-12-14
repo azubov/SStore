@@ -83,6 +83,7 @@
                 <div class="text-center">
                     <span th:text="'Price USD: ' + ${item.getPrice()}"></span>
                 </div>
+                <div sec:authorize="hasRole('ROLE_USER')" th:replace="fragments/order :: order"></div>
             </div>
         </div>
     </div>
