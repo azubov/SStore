@@ -33,6 +33,19 @@
             >Color</option>
         </select>
     </div>
+
+    <div>
+        <label>Category:</label>
+        <select th:name="category" type="text">
+            <option value="">Any</option>
+            <option th:each="category : ${categories}"
+                    th:value="${category.name}"
+                    th:text="${category.name}"
+                    th:selected="${category.name == #request.getParameter('category')}"
+            >Category</option>
+        </select>
+    </div>
+
     <div>
         <label>Page Number:</label>
         <select th:name="pageNumber" type="number">

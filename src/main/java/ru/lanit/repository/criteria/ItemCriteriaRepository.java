@@ -66,6 +66,12 @@ public class ItemCriteriaRepository {
                             "%" + criteria.getColor() + "%")
             );
         }
+        if (Objects.nonNull(criteria.getCategory())) {
+            predicates.add(
+                    criteriaBuilder.like(itemRoot.get("category").get("name"),
+                            "%" + criteria.getCategory() + "%")
+            );
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 
