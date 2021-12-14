@@ -13,9 +13,9 @@ public class AuthController {
         return "security/login";
     }
 
-    @GetMapping("/success")
-    public String getSuccessPage() {
-        return "security/success";
+    @GetMapping("/access_denied")
+    public String accessDeniedPage() {
+        return "security/accessDenied";
     }
 
 }

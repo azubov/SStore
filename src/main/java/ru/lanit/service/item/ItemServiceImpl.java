@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import ru.lanit.model.criteria.ItemPage;
 import ru.lanit.model.criteria.ItemSearchCriteria;
-import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.repository.ItemRepository;
 import ru.lanit.repository.criteria.ItemCriteriaRepository;
@@ -13,7 +12,6 @@ import ru.lanit.repository.criteria.ItemCriteriaRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
