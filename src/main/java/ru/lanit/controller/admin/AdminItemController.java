@@ -57,13 +57,13 @@ public class AdminItemController {
     }
 
     @PostMapping("/new")
-    public String create(Model model,
-                              @ModelAttribute("itemName") String itemName,
-                              @ModelAttribute("partNumber") String partNumber,
-                              @ModelAttribute("price") String price,
-                              @ModelAttribute("categoryName") String categoryName,
-                              @ModelAttribute("chosenColor") String chosenColor,
-                              @ModelAttribute("uploadedImageName") String uploadedImageName
+    public String create(
+                        @ModelAttribute("itemName") String itemName,
+                        @ModelAttribute("partNumber") String partNumber,
+                        @ModelAttribute("price") String price,
+                        @ModelAttribute("categoryName") String categoryName,
+                        @ModelAttribute("chosenColor") String chosenColor,
+                        @ModelAttribute("uploadedImageName") String uploadedImageName
     ) {
 
         Category category = categoryService.findByName(categoryName);
@@ -117,13 +117,13 @@ public class AdminItemController {
 
     @PostMapping("/update/{id}")
     public String update(
-                                 @PathVariable("id") Long id,
-                                 @ModelAttribute("itemName") String itemName,
-                                 @ModelAttribute("partNumber") String partNumber,
-                                 @ModelAttribute("price") String price,
-                                 @ModelAttribute("categoryName") String categoryName,
-                                 @ModelAttribute("chosenColor") String chosenColor,
-                                 @ModelAttribute("uploadedImageName") String uploadedImageName
+                         @PathVariable("id") Long id,
+                         @ModelAttribute("itemName") String itemName,
+                         @ModelAttribute("partNumber") String partNumber,
+                         @ModelAttribute("price") String price,
+                         @ModelAttribute("categoryName") String categoryName,
+                         @ModelAttribute("chosenColor") String chosenColor,
+                         @ModelAttribute("uploadedImageName") String uploadedImageName
     ) {
 
         Item item = itemService.findById(id);
