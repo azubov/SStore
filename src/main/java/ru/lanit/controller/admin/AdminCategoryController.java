@@ -29,8 +29,8 @@ public class AdminCategoryController {
     public String showNewPage(Model model,
                               @ModelAttribute("categoryName") String categoryName,
                               @ModelAttribute("uploadedImageName") String uploadedImageName,
-                              @ModelAttribute("parentName") String parentName
-                              ) {
+                              @ModelAttribute("parentName") String parentName) {
+
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
 
@@ -44,7 +44,7 @@ public class AdminCategoryController {
     @PostMapping("/new")
     public String create(@ModelAttribute("categoryName") String categoryName,
                          @ModelAttribute("parentName") String parentName,
-                         @RequestParam("imageName") String imageName) {
+                         @ModelAttribute("imageName") String imageName) {
 
         Category category = new Category();
         category.setName(categoryName);
@@ -64,8 +64,7 @@ public class AdminCategoryController {
                                  @PathVariable("id") Long id,
                                  @ModelAttribute("categoryName") String categoryName,
                                  @ModelAttribute("uploadedImageName") String uploadedImageName,
-                                 @ModelAttribute("parentName") String parentName
-                                 ) {
+                                 @ModelAttribute("parentName") String parentName) {
 
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
@@ -87,8 +86,8 @@ public class AdminCategoryController {
     public String update(@PathVariable("id") Long id,
                          @ModelAttribute("categoryName") String categoryName,
                          @ModelAttribute("imageName") String imageName,
-                         @ModelAttribute("parentName") String parentName
-                         ) {
+                         @ModelAttribute("parentName") String parentName) {
+
         Category category = categoryService.findById(id);
         category.setName(categoryName);
         category.setImageUrl(imageName);

@@ -6,7 +6,7 @@ import java.util.Set;
 
 public class ImageSet {
 
-    private static Set<String> images = new HashSet<>();
+    private static final Set<String> images = new HashSet<>();
 
     public static Set<String> getImages() {
         return images;

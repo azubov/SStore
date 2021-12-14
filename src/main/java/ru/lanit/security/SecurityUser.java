@@ -13,6 +13,5 @@ public class SecurityUser {
                 .password(user.getPassword())
                 .roles(user.getRole().name())
                 .build();
-
     }
 }

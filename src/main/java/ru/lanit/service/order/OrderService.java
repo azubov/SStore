@@ -1,6 +1,5 @@
 package ru.lanit.service.order;
 
-import ru.lanit.model.entity.Item;
 import ru.lanit.model.entity.Order;
 import ru.lanit.model.entity.User;
 

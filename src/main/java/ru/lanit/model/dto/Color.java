@@ -12,7 +12,7 @@ public enum Color {
 
     private final String displayValue;
 
-    private Color(String displayValue) {
+    Color(String displayValue) {
         this.displayValue = displayValue;
     }
 

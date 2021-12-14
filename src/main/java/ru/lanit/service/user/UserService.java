@@ -9,4 +9,5 @@ public interface UserService {
     List<User> findAll();
     User findByName(String name);
     User getCurrentUser();
+    boolean existsUserByName(String name);
 }

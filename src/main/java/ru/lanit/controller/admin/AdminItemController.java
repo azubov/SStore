@@ -37,8 +37,7 @@ public class AdminItemController {
                               @ModelAttribute("price") String price,
                               @ModelAttribute("categoryName") String categoryName,
                               @ModelAttribute("chosenColor") String chosenColor,
-                              @ModelAttribute("uploadedImageName") String uploadedImageName
-                              ) {
+                              @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
         model.addAttribute("itemName", itemName);
         model.addAttribute("partNumber", partNumber);
@@ -57,24 +56,22 @@ public class AdminItemController {
     }
 
     @PostMapping("/new")
-    public String create(
-                        @ModelAttribute("itemName") String itemName,
+    public String create(@ModelAttribute("itemName") String itemName,
                         @ModelAttribute("partNumber") String partNumber,
                         @ModelAttribute("price") String price,
                         @ModelAttribute("categoryName") String categoryName,
                         @ModelAttribute("chosenColor") String chosenColor,
-                        @ModelAttribute("uploadedImageName") String uploadedImageName
-    ) {
+                        @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
         Category category = categoryService.findByName(categoryName);
 
-        Item item = new Item();
-        item.setName(itemName);
-        item.setPartNumber(partNumber);
-        item.setPrice(Double.parseDouble(price));
-        item.setCategory(category);
-        item.setColor(chosenColor);
-        item.setImageUrl(uploadedImageName);
+        Item item = Item.builder()
+                .name(itemName)
+                .partNumber(partNumber)
+                .price(Double.parseDouble(price))
+                .category(category)
+                .color(chosenColor)
+                .imageUrl(uploadedImageName).build();
 
         itemService.save(item);
 
@@ -89,15 +86,14 @@ public class AdminItemController {
                                  @ModelAttribute("price") String price,
                                  @ModelAttribute("categoryName") String categoryName,
                                  @ModelAttribute("chosenColor") String chosenColor,
-                                 @ModelAttribute("uploadedImageName") String uploadedImageName
-    ) {
+                                 @ModelAttribute("uploadedImageName") String uploadedImageName) {
+
+        Item itemFromDb = itemService.findById(id);
 
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("categoryList", categoryService.findAllSubCategories());
         model.addAttribute("colors", Color.values());
         model.addAttribute("id", id);
-
-        Item itemFromDb = itemService.findById(id);
 
         model.addAttribute("itemName",
                 itemName.isEmpty() ? itemFromDb.getName() : itemName);
@@ -123,8 +119,7 @@ public class AdminItemController {
                          @ModelAttribute("price") String price,
                          @ModelAttribute("categoryName") String categoryName,
                          @ModelAttribute("chosenColor") String chosenColor,
-                         @ModelAttribute("uploadedImageName") String uploadedImageName
-    ) {
+                         @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
         Item item = itemService.findById(id);
         Category category = categoryService.findByName(categoryName);

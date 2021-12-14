@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.dto.Color;
+import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.service.category.CategoryService;
@@ -36,8 +36,7 @@ public class UploadController {
     public String uploadImageCategoryNew(Model model,
                                          @ModelAttribute("categoryName") String categoryName,
                                          @RequestParam("imageFile") MultipartFile imageFile,
-                                         @ModelAttribute("parentName") String parentName
-    ) {
+                                         @ModelAttribute("parentName") String parentName) {
         try {
             uploadService.saveImage(imageFile);
 
@@ -62,8 +61,7 @@ public class UploadController {
                                            @ModelAttribute("categoryName") String categoryName,
                                            @ModelAttribute("imageName") String imageName,
                                            @RequestParam("imageFile") MultipartFile imageFile,
-                                           @ModelAttribute("parentName") String parentName
-    ) {
+                                           @ModelAttribute("parentName") String parentName) {
 
         try {
             uploadService.saveImage(imageFile);
@@ -95,8 +93,7 @@ public class UploadController {
                                      @ModelAttribute("price") String price,
                                      @ModelAttribute("categoryName") String categoryName,
                                      @ModelAttribute("chosenColor") String chosenColor,
-                                     @RequestParam("imageFile") MultipartFile imageFile
-    ) {
+                                     @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
 
@@ -128,18 +125,16 @@ public class UploadController {
                                            @ModelAttribute("price") String price,
                                            @ModelAttribute("categoryName") String categoryName,
                                            @ModelAttribute("chosenColor") String chosenColor,
-                                           @RequestParam("imageFile") MultipartFile imageFile
-    ) {
+                                           @RequestParam("imageFile") MultipartFile imageFile) {
 
         try {
             uploadService.saveImage(imageFile);
+            Item itemFromDb = itemService.findById(id);
 
             model.addAttribute("imageSet", ImageSet.getImages());
             model.addAttribute("categoryList", categoryService.findAllSubCategories());
             model.addAttribute("colors", Color.values());
             model.addAttribute("id", id);
-
-            Item itemFromDb = itemService.findById(id);
 
             model.addAttribute("itemName",
                     itemName.isEmpty() ? itemFromDb.getName() : itemName);
@@ -153,7 +148,6 @@ public class UploadController {
                     chosenColor.isEmpty() ? itemFromDb.getColor() : chosenColor);
             model.addAttribute("uploadedImageName",
                     imageFile.isEmpty() ? itemFromDb.getImageUrl() : imageFile.getOriginalFilename());
-
 
         } catch (IOException e) {
             e.printStackTrace();
