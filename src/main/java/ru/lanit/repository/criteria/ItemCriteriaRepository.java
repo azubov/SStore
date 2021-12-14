@@ -72,6 +72,12 @@ public class ItemCriteriaRepository {
                             "%" + criteria.getCategory() + "%")
             );
         }
+        if (Objects.nonNull(criteria.getCategory())) {
+            predicates.add(
+                    criteriaBuilder.like(itemRoot.get("category").get("parentCategory").get("name"),
+                            "%" + criteria.getParentCategory() + "%")
+            );
+        }
         return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
 

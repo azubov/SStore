@@ -47,6 +47,18 @@
     </div>
 
     <div>
+        <label>Parent Category:</label>
+        <select th:name="parentCategory" type="text">
+            <option value="">Any</option>
+            <option th:each="category : ${parentCategories}"
+                    th:value="${category.name}"
+                    th:text="${category.name}"
+                    th:selected="${category.name == #request.getParameter('parentCategory')}"
+            >Category</option>
+        </select>
+    </div>
+
+    <div>
         <label>Page Number:</label>
         <select th:name="pageNumber" type="number">
             <option th:each="page : ${#numbers.sequence(1, itemPage.maxPageNumber)}"

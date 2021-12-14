@@ -31,6 +31,7 @@ public class ItemController {
         model.addAttribute("colors", Color.values());
         model.addAttribute("itemPage", itemPage);
         model.addAttribute("categories", categoryService.findAllSubCategories());
+        model.addAttribute("parentCategories", categoryService.findAllParentCategories());
 
         return "criteriaList";
     }

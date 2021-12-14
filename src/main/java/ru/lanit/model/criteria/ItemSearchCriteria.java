@@ -10,4 +10,5 @@ public class ItemSearchCriteria {
     private Double priceHigh;
     private String color;
     private String category;
+    private String parentCategory;
 }
