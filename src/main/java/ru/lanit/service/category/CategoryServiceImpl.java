@@ -48,10 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category findByName(String name) {
-        return repository.findAll()
-                .stream()
-                .filter(category -> category.getName().equals(name))
-                .findFirst().orElseThrow(NoSuchElementException::new);
+        return repository.findFirstByName(name);
     }
 
     @Override
