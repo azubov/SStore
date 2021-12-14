@@ -58,11 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> findAllSubsByParentCategory(Category parentCategory) {
-        return repository.findAll()
-                .stream()
-                .filter(category -> category.getParentCategory() != null)
-                .filter(category -> category.getParentCategory().getName().equals(parentCategory.getName()))
-                .collect(Collectors.toList());
+        return repository.findAllSubsByParentCategory(parentCategory);
     }
 
     @Override
