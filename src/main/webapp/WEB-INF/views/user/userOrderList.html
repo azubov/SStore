@@ -21,13 +21,12 @@
     </thead>
     <tbody>
     <tr th:each="order : ${orders}">
-        <td th:text="${order.id}">Id</td>
-        <td th:text="${order.user.name}">User Name</td>
+        <td th:text="${order.getId()}">Id</td>
+        <td th:text="${order.getUser().getName()}">User Name</td>
         <td>
-            <p th:each="item : ${order.items}">
-                <span th:text="${item.name}">Item Name</span>
-                <span th:text="${item.category.name}">Item Category Name</span>
-            </p>
+            <span th:each="item : ${order.getItems()}">
+                <span th:text="${item}">Item</span>
+            </span>
         </td>
     </tr>
     </tbody>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.lanit.model.entity.User;
 import ru.lanit.repository.UserRepository;
@@ -22,6 +23,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void save(User user) {
+        String encryptedPassword = new BCryptPasswordEncoder(12).encode(user.getPassword());
+        user.setPassword(encryptedPassword);
         repository.save(user);
     }
 

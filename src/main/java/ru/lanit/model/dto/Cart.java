@@ -2,7 +2,9 @@ package ru.lanit.model.dto;
 
 import ru.lanit.model.entity.Item;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Cart {
@@ -23,5 +25,17 @@ public class Cart {
 
     public static void clear() {
         items.clear();
+    }
+
+    public static List<Item> getItemsFromCart() {
+        List<Item> itemsFromCart = new ArrayList<>();
+
+        for (Map.Entry<Item, Integer> entry : Cart.getAll().entrySet()) {
+            for (int i = entry.getValue(); i > 0; i--) {
+                itemsFromCart.add(entry.getKey());
+            }
+        }
+
+        return itemsFromCart;
     }
 }

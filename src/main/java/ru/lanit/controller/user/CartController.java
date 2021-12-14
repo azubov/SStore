@@ -57,28 +57,17 @@ public class CartController {
     @GetMapping("/order")
     public String makeOrder(Model model) {
 
-        Order order = orderService.createOrderFromCart();
-        User currentUser = userService.getCurrentUser();
+        Order order = new Order();
 
+        List<Item> itemsFromCart = Cart.getItemsFromCart();
+        order.setItems(itemsFromCart);
+
+        User currentUser = userService.getCurrentUser();
         order.setUser(currentUser);
 
         orderService.save(order);
 
         Cart.clear();
-
-        System.out.println("Try To Display Orders");
-
-        List<Order> orders = orderService.findAllByUser(currentUser);
-        for (Order o : orders) {
-            System.out.println(o.toString());
-        }
-
-        System.out.println("Try To Display Items of Each Order");
-
-        List<Item> items = orders.stream().flatMap(o -> o.getItems().stream()).toList();
-        for (Item i : items) {
-            System.out.println(i.getName());
-        }
 
         model.addAttribute("orders", orderService.findAllByUser(currentUser));
 
