@@ -1,4 +1,4 @@
-package ru.lanit.controller;
+package ru.lanit.controller.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
