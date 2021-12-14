@@ -7,7 +7,6 @@ import ru.lanit.model.entity.User;
 import ru.lanit.repository.OrderRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -31,9 +30,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> findAllByUser(User user) {
-        return repository.findAll()
-                .stream()
-                .filter(order -> order.getUser().equals(user))
-                .collect(Collectors.toList());
+        return repository.findAllByUser(user);
     }
 }
