@@ -12,6 +12,7 @@ import ru.lanit.model.dto.Color;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
+import ru.lanit.model.test.CategoryDto;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.item.ItemService;
 import ru.lanit.service.upload.UploadService;
@@ -33,20 +34,16 @@ public class UploadController {
     }
 
     @PostMapping("/admin/category/uploadImage/new")
-    public String uploadImageCategoryNew(Model model,
-                                         @ModelAttribute("categoryName") String categoryName,
-                                         @RequestParam("imageFile") MultipartFile imageFile,
-                                         @ModelAttribute("parentName") String parentName) {
+    public String uploadImageCategoryNew(Model model, CategoryDto categoryDto,
+                                         @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
 
             model.addAttribute("imageSet", ImageSet.getImages());
             model.addAttribute("parentList", categoryService.findAllParentCategories());
 
-
-            model.addAttribute("categoryName", categoryName);
-            model.addAttribute("uploadedImageName", imageFile.getOriginalFilename());
-            model.addAttribute("parentName", parentName);
+            categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
+            model.addAttribute("categoryDto", categoryDto);
 
         } catch (IOException e) {
             e.printStackTrace();

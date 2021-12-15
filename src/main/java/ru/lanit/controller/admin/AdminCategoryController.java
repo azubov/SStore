@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
+import ru.lanit.model.test.CategoryDto;
 import ru.lanit.service.category.CategoryService;
 
 @Controller
@@ -26,32 +27,23 @@ public class AdminCategoryController {
     }
 
     @GetMapping("/new")
-    public String showNewPage(Model model,
-                              @ModelAttribute("categoryName") String categoryName,
-                              @ModelAttribute("uploadedImageName") String uploadedImageName,
-                              @ModelAttribute("parentName") String parentName) {
-
+    public String showNewPage(Model model, CategoryDto categoryDto) {
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
-
-        model.addAttribute("categoryName", categoryName);
-        model.addAttribute("uploadedImageName", uploadedImageName);
-        model.addAttribute("parentName", parentName);
+        model.addAttribute("categoryDto", categoryDto == null ? new CategoryDto() : categoryDto);
 
         return "admin/adminCategoryNew";
     }
 
     @PostMapping("/new")
-    public String create(@ModelAttribute("categoryName") String categoryName,
-                         @ModelAttribute("parentName") String parentName,
-                         @ModelAttribute("imageName") String imageName) {
+    public String create(CategoryDto categoryDto) {
 
         Category category = new Category();
-        category.setName(categoryName);
-        category.setImageUrl(imageName);
+        category.setName(categoryDto.getCategoryName());
+        category.setImageUrl(categoryDto.getUploadedImageName());
 
-        if (!parentName.isEmpty()) {
-            category.setParentCategory(categoryService.findByName(parentName));
+        if (!categoryDto.getParentName().isEmpty()) {
+            category.setParentCategory(categoryService.findByName(categoryDto.getParentName()));
         }
 
         categoryService.save(category);

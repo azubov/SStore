@@ -13,19 +13,19 @@
 <div th:replace="fragments/topNav :: navbar"></div>
 
 <form th:action="@{/admin/category/new}" method="post"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" th:object="${categoryDto}">
 
     <label>Name: </label>
-    <input type="text" name="categoryName" th:value="${categoryName}">
+    <input type="text" name="categoryName" th:field="${categoryDto.categoryName}">
     <br>
 
     <label>Image: </label>
-    <select name="imageName" id="imageName">
+    <select name="imageName" id="imageName" th:field="${categoryDto.uploadedImageName}">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${uploadedImageName}"
+                th:selected="${image} == ${categoryDto.getUploadedImageName()}"
         >Image</option>
     </select>
 
@@ -33,12 +33,12 @@
     </div>
 
     <label>Parent Category: </label>
-    <select name="parentName">
+    <select name="parentName" th:field="${categoryDto.parentName}">
         <option value="">Any</option>
         <option th:each="parent : ${parentList}"
                 th:value="${parent.getName()}"
                 th:text="${parent.getName()}"
-                th:selected="${parent.getName()} == ${parentName}"
+                th:selected="${parent.getName()} == ${categoryDto.getUploadedImageName()}"
         >Category</option>
     </select>
     <button type="submit">Add Category</button>
