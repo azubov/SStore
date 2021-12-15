@@ -13,49 +13,46 @@
 <div th:replace="fragments/topNav :: navbar"></div>
 
 <form th:action="@{/admin/item/new}" method="post"
-      enctype="multipart/form-data">
+      enctype="multipart/form-data" th:object="${itemDto}">
 
     <label>Name: </label>
-    <input type="text" name="itemName" th:value="${itemName}">
+    <input type="text" name="itemName" th:field="${itemDto.itemName}">
     <br>
 
     <label>Part Number: </label>
-    <input type="text" name="partNumber" th:value="${partNumber}">
+    <input type="text" name="partNumber" th:field="${itemDto.partNumber}">
     <br>
 
     <label>Price: </label>
-    <input name="price" th:value="${price}">
+    <input name="price" th:field="${itemDto.price}">
     <br>
 
     <label>Category: </label>
-    <select name="categoryName">
+    <select name="categoryName" th:field="${itemDto.categoryName}">
         <option value="">Any</option>
         <option th:each="category : ${categoryList}"
                 th:value="${category.getName()}"
                 th:text="${category.getName()}"
-                th:selected="${category.getName()} == ${categoryName}"
         >Category</option>
     </select>
     <br>
 
     <label>Color: </label>
-    <select name="chosenColor">
+    <select name="chosenColor" th:field="${itemDto.chosenColor}">
         <option value="">Any</option>
         <option th:each="color : ${colors}"
                 th:value="${color.getDisplayValue()}"
                 th:text="${color.getDisplayValue()}"
-                th:selected="${color.getDisplayValue()} == ${chosenColor}"
         >Category</option>
     </select>
     <br>
 
     <label>Image: </label>
-    <select name="uploadedImageName" id="imageName">
+    <select name="uploadedImageName" id="imageName" th:field="${itemDto.uploadedImageName}">
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${uploadedImageName}"
         >Image</option>
     </select>
 

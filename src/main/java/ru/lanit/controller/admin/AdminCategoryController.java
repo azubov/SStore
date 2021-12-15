@@ -36,6 +36,7 @@ public class AdminCategoryController {
 
     @PostMapping("/new")
     public String create(CategoryDto categoryDto) {
+
         Category category = new Category();
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
@@ -43,7 +44,9 @@ public class AdminCategoryController {
             Category parentCategory = categoryService.findByName(categoryDto.getParentName());
             category.populateWith(categoryDto, parentCategory);
         }
+
         categoryService.save(category);
+
         return "redirect:/admin/category";
     }
 
@@ -59,6 +62,7 @@ public class AdminCategoryController {
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable("id") Long id, CategoryDto categoryDto) {
+
         Category category = categoryService.findById(id);
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
@@ -66,7 +70,9 @@ public class AdminCategoryController {
             Category parentCategory = categoryService.findByName(categoryDto.getParentName());
             category.populateWith(categoryDto, parentCategory);
         }
+
         categoryService.save(category);
+
         return "redirect:/admin/category";
     }
 

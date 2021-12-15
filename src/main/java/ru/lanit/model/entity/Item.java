@@ -3,8 +3,8 @@ package ru.lanit.model.entity;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import ru.lanit.model.dto.ItemDto;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,4 +25,13 @@ public class Item extends BaseEntity {
     private Category category;
     private String color;
     private String imageUrl;
+
+    public void populateWith(ItemDto itemDto, Category category) {
+        this.name = itemDto.getItemName();
+        this.partNumber = itemDto.getPartNumber();
+        this.price = Double.parseDouble(itemDto.getPrice());
+        this.category = category;
+        this.color = itemDto.getChosenColor();
+        this.imageUrl = itemDto.getUploadedImageName();
+    }
 }

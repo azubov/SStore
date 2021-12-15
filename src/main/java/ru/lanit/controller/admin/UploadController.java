@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lanit.model.dto.Color;
 import ru.lanit.model.dto.ImageSet;
+import ru.lanit.model.dto.ItemDto;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.model.dto.CategoryDto;
@@ -69,7 +70,6 @@ public class UploadController {
             Category categoryFromDb = categoryService.findById(id);
             categoryDto.populateWith(categoryFromDb);
             categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
-
             model.addAttribute("categoryDto", categoryDto);
 
         } catch (IOException e) {
@@ -81,28 +81,17 @@ public class UploadController {
 
     @PostMapping("/admin/item/uploadImage/new")
     public String uploadImageItemNew(Model model,
-                                     @ModelAttribute("itemName") String itemName,
-                                     @ModelAttribute("partNumber") String partNumber,
-                                     @ModelAttribute("price") String price,
-                                     @ModelAttribute("categoryName") String categoryName,
-                                     @ModelAttribute("chosenColor") String chosenColor,
+                                     ItemDto itemDto,
                                      @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
 
-            model.addAttribute("itemName", itemName);
-            model.addAttribute("partNumber", partNumber);
-            model.addAttribute("price", price);
-
-            model.addAttribute("categoryName", categoryName);
             model.addAttribute("categoryList", categoryService.findAllSubCategories());
-
-            model.addAttribute("chosenColor", chosenColor);
             model.addAttribute("colors", Color.values());
-
-            model.addAttribute("uploadedImageName", imageFile.getOriginalFilename());
             model.addAttribute("imageSet", ImageSet.getImages());
 
+            itemDto.setUploadedImageName(imageFile.getOriginalFilename());
+            model.addAttribute("itemDto", itemDto);
         } catch (IOException e) {
             e.printStackTrace();
         }

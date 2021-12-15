@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.dto.Color;
+import ru.lanit.model.dto.ItemDto;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.service.category.CategoryService;
@@ -31,48 +32,20 @@ public class AdminItemController {
     }
 
     @GetMapping("/new")
-    public String showNewPage(Model model,
-                              @ModelAttribute("itemName") String itemName,
-                              @ModelAttribute("partNumber") String partNumber,
-                              @ModelAttribute("price") String price,
-                              @ModelAttribute("categoryName") String categoryName,
-                              @ModelAttribute("chosenColor") String chosenColor,
-                              @ModelAttribute("uploadedImageName") String uploadedImageName) {
-
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("partNumber", partNumber);
-        model.addAttribute("price", price);
-
-        model.addAttribute("categoryName", categoryName);
+    public String showNewPage(Model model, ItemDto itemDto) {
         model.addAttribute("categoryList", categoryService.findAllSubCategories());
-
-        model.addAttribute("chosenColor", chosenColor);
         model.addAttribute("colors", Color.values());
-
-        model.addAttribute("uploadedImageName", uploadedImageName);
         model.addAttribute("imageSet", ImageSet.getImages());
-
+        model.addAttribute("itemDto", itemDto);
         return "admin/adminItemNew";
     }
 
     @PostMapping("/new")
-    public String create(@ModelAttribute("itemName") String itemName,
-                        @ModelAttribute("partNumber") String partNumber,
-                        @ModelAttribute("price") String price,
-                        @ModelAttribute("categoryName") String categoryName,
-                        @ModelAttribute("chosenColor") String chosenColor,
-                        @ModelAttribute("uploadedImageName") String uploadedImageName) {
+    public String create(ItemDto itemDto) {
 
-        Category category = categoryService.findByName(categoryName);
-
-        Item item = Item.builder()
-                .name(itemName)
-                .partNumber(partNumber)
-                .price(Double.parseDouble(price))
-                .category(category)
-                .color(chosenColor)
-                .imageUrl(uploadedImageName).build();
-
+        Category category = categoryService.findByName(itemDto.getCategoryName());
+        Item item = new Item();
+        item.populateWith(itemDto, category);
         itemService.save(item);
 
         return "redirect:/admin/item";
