@@ -1,4 +1,4 @@
-package ru.lanit.model.test;
+package ru.lanit.model.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -12,7 +12,7 @@ import ru.lanit.model.dto.Color;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
-import ru.lanit.model.test.CategoryDto;
+import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.item.ItemService;
 import ru.lanit.service.upload.UploadService;

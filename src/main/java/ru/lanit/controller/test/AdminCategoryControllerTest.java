@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
-import ru.lanit.model.test.CategoryDto;
+import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.service.category.CategoryService;
 
 @Controller
