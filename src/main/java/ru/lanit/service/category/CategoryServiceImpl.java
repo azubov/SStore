@@ -70,5 +70,10 @@ public class CategoryServiceImpl implements CategoryService {
     public List<String> displaySubCategoryUniqueNames() {
         return findAllSubCategories().stream().map(Category::getName).distinct().collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existsCategoryByName(String name) {
+        return repository.existsCategoryByName(name);
+    }
 }
 

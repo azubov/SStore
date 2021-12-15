@@ -35,7 +35,15 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/new")
-    public String create(CategoryDto categoryDto) {
+    public String create(Model model, CategoryDto categoryDto) {
+
+        if (categoryService.existsCategoryByName(categoryDto.getCategoryName())) {
+            model.addAttribute("imageSet", ImageSet.getImages());
+            model.addAttribute("parentList", categoryService.findAllParentCategories());
+            model.addAttribute("categoryDto", categoryDto);
+            model.addAttribute("nameError", "Category with such name already exists");
+            return "admin/adminCategoryNew";
+        }
 
         Category category = new Category();
 
@@ -65,9 +73,18 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable("id") Long id, CategoryDto categoryDto) {
+    public String update(Model model, @PathVariable("id") Long id, CategoryDto categoryDto) {
 
         Category category = categoryService.findById(id);
+
+        if (categoryService.existsCategoryByName(categoryDto.getCategoryName())) {
+            model.addAttribute("imageSet", ImageSet.getImages());
+            model.addAttribute("parentList", categoryService.findAllParentCategories());
+            categoryDto.populateWith(category);
+            model.addAttribute("categoryDto", categoryDto);
+            model.addAttribute("nameError", "Category with such name already exists");
+            return "admin/adminCategoryUpdate";
+        }
 
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
