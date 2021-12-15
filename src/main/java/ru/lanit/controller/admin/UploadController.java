@@ -3,7 +3,6 @@ package ru.lanit.controller.admin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,34 +101,19 @@ public class UploadController {
     @PostMapping("/admin/item/uploadImage/update/{id}")
     public String uploadImagCategoryUpdate(Model model,
                                            @PathVariable("id") Long id,
-                                           @ModelAttribute("itemName") String itemName,
-                                           @ModelAttribute("partNumber") String partNumber,
-                                           @ModelAttribute("price") String price,
-                                           @ModelAttribute("categoryName") String categoryName,
-                                           @ModelAttribute("chosenColor") String chosenColor,
+                                           ItemDto itemDto,
                                            @RequestParam("imageFile") MultipartFile imageFile) {
 
         try {
             uploadService.saveImage(imageFile);
             Item itemFromDb = itemService.findById(id);
+            itemDto.populateWith(itemFromDb);
+            itemDto.setUploadedImageName(imageFile.getOriginalFilename());
 
             model.addAttribute("imageSet", ImageSet.getImages());
             model.addAttribute("categoryList", categoryService.findAllSubCategories());
             model.addAttribute("colors", Color.values());
-            model.addAttribute("id", id);
-
-            model.addAttribute("itemName",
-                    itemName.isEmpty() ? itemFromDb.getName() : itemName);
-            model.addAttribute("partNumber",
-                    partNumber.isEmpty() ? itemFromDb.getPartNumber() : partNumber);
-            model.addAttribute("price",
-                    price.isEmpty() ? itemFromDb.getPrice() : price);
-            model.addAttribute("categoryName",
-                    categoryName.isEmpty() ? itemFromDb.getCategory().getName() : categoryName);
-            model.addAttribute("chosenColor",
-                    chosenColor.isEmpty() ? itemFromDb.getColor() : chosenColor);
-            model.addAttribute("uploadedImageName",
-                    imageFile.isEmpty() ? itemFromDb.getImageUrl() : imageFile.getOriginalFilename());
+            model.addAttribute("itemDto", itemDto);
 
         } catch (IOException e) {
             e.printStackTrace();

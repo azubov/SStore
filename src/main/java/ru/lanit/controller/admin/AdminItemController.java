@@ -54,32 +54,16 @@ public class AdminItemController {
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model,
                                  @PathVariable("id") Long id,
-                                 @ModelAttribute("itemName") String itemName,
-                                 @ModelAttribute("partNumber") String partNumber,
-                                 @ModelAttribute("price") String price,
-                                 @ModelAttribute("categoryName") String categoryName,
-                                 @ModelAttribute("chosenColor") String chosenColor,
-                                 @ModelAttribute("uploadedImageName") String uploadedImageName) {
+                                 ItemDto itemDto) {
 
         Item itemFromDb = itemService.findById(id);
+
+        itemDto.populateWith(itemFromDb);
 
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("categoryList", categoryService.findAllSubCategories());
         model.addAttribute("colors", Color.values());
-        model.addAttribute("id", id);
-
-        model.addAttribute("itemName",
-                itemName.isEmpty() ? itemFromDb.getName() : itemName);
-        model.addAttribute("partNumber",
-                partNumber.isEmpty() ? itemFromDb.getPartNumber() : partNumber);
-        model.addAttribute("price",
-                price.isEmpty() ? itemFromDb.getPrice() : price);
-        model.addAttribute("categoryName",
-                categoryName.isEmpty() ? itemFromDb.getCategory().getName() : categoryName);
-        model.addAttribute("chosenColor",
-                chosenColor.isEmpty() ? itemFromDb.getColor() : chosenColor);
-        model.addAttribute("uploadedImageName",
-                uploadedImageName.isEmpty() ? itemFromDb.getImageUrl() : uploadedImageName);
+        model.addAttribute("itemDto", itemDto);
 
         return "admin/adminItemUpdate";
     }
@@ -87,23 +71,12 @@ public class AdminItemController {
     @PostMapping("/update/{id}")
     public String update(
                          @PathVariable("id") Long id,
-                         @ModelAttribute("itemName") String itemName,
-                         @ModelAttribute("partNumber") String partNumber,
-                         @ModelAttribute("price") String price,
-                         @ModelAttribute("categoryName") String categoryName,
-                         @ModelAttribute("chosenColor") String chosenColor,
+                         ItemDto itemDto,
                          @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
         Item item = itemService.findById(id);
-        Category category = categoryService.findByName(categoryName);
-
-        item.setName(itemName);
-        item.setPartNumber(partNumber);
-        item.setPrice(Double.parseDouble(price));
-        item.setCategory(category);
-        item.setColor(chosenColor);
-        item.setImageUrl(uploadedImageName);
-
+        Category category = categoryService.findByName(itemDto.getCategoryName());
+        item.populateWith(itemDto, category);
         itemService.save(item);
 
         return "redirect:/admin/item";
