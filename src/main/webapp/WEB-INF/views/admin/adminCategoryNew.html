@@ -25,7 +25,6 @@
         <option th:each="image : ${imageSet}"
                 th:value="${image}"
                 th:text="${image}"
-                th:selected="${image} == ${categoryDto.getUploadedImageName()}"
         >Image</option>
     </select>
 
@@ -38,7 +37,6 @@
         <option th:each="parent : ${parentList}"
                 th:value="${parent.getName()}"
                 th:text="${parent.getName()}"
-                th:selected="${parent.getName()} == ${categoryDto.getUploadedImageName()}"
         >Category</option>
     </select>
     <button type="submit">Add Category</button>

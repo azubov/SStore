@@ -30,7 +30,7 @@ public class AdminCategoryController {
     public String showNewPage(Model model, CategoryDto categoryDto) {
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
-        model.addAttribute("categoryDto", categoryDto == null ? new CategoryDto() : categoryDto);
+        model.addAttribute("categoryDto", categoryDto);
 
         return "admin/adminCategoryNew";
     }
@@ -54,38 +54,29 @@ public class AdminCategoryController {
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model,
                                  @PathVariable("id") Long id,
-                                 @ModelAttribute("categoryName") String categoryName,
-                                 @ModelAttribute("uploadedImageName") String uploadedImageName,
-                                 @ModelAttribute("parentName") String parentName) {
+                                 CategoryDto categoryDto) {
 
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
-        model.addAttribute("id", id);
 
         Category categoryFromDb = categoryService.findById(id);
+        categoryDto.populateWith(categoryFromDb);
 
-        model.addAttribute("categoryName",
-                categoryName.isEmpty() ? categoryFromDb.getName() : categoryName);
-        model.addAttribute("uploadedImageName",
-                uploadedImageName.isEmpty() ? categoryFromDb.getImageUrl() : uploadedImageName);
-        model.addAttribute("parentName",
-                parentName.isEmpty() ? categoryFromDb.getParentCategoryName() : parentName);
+        model.addAttribute("categoryDto", categoryDto);
 
         return "admin/adminCategoryUpdate";
     }
 
     @PostMapping("/update/{id}")
     public String update(@PathVariable("id") Long id,
-                         @ModelAttribute("categoryName") String categoryName,
-                         @ModelAttribute("imageName") String imageName,
-                         @ModelAttribute("parentName") String parentName) {
+                         CategoryDto categoryDto) {
 
         Category category = categoryService.findById(id);
-        category.setName(categoryName);
-        category.setImageUrl(imageName);
+        category.setName(categoryDto.getCategoryName());
+        category.setImageUrl(categoryDto.getUploadedImageName());
 
-        if (!parentName.isEmpty()) {
-            category.setParentCategory(categoryService.findByName(parentName));
+        if (!categoryDto.getParentName().isEmpty()) {
+            category.setParentCategory(categoryService.findByName(categoryDto.getParentName()));
         }
 
         categoryService.save(category);

@@ -34,7 +34,8 @@ public class UploadController {
     }
 
     @PostMapping("/admin/category/uploadImage/new")
-    public String uploadImageCategoryNew(Model model, CategoryDto categoryDto,
+    public String uploadImageCategoryNew(Model model,
+                                         CategoryDto categoryDto,
                                          @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
@@ -55,10 +56,8 @@ public class UploadController {
     @PostMapping("/admin/category/uploadImage/update/{id}")
     public String uploadImagCategoryUpdate(Model model,
                                            @PathVariable("id") Long id,
-                                           @ModelAttribute("categoryName") String categoryName,
-                                           @ModelAttribute("imageName") String imageName,
-                                           @RequestParam("imageFile") MultipartFile imageFile,
-                                           @ModelAttribute("parentName") String parentName) {
+                                           CategoryDto categoryDto,
+                                           @RequestParam("imageFile") MultipartFile imageFile) {
 
         try {
             uploadService.saveImage(imageFile);
@@ -68,13 +67,10 @@ public class UploadController {
             model.addAttribute("id", id);
 
             Category categoryFromDb = categoryService.findById(id);
+            categoryDto.populateWith(categoryFromDb);
+            categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
 
-            model.addAttribute("categoryName",
-                    categoryName.isEmpty() ? categoryFromDb.getName() : categoryName);
-            model.addAttribute("uploadedImageName",
-                    imageName.isEmpty() ? categoryFromDb.getImageUrl() : imageFile.getOriginalFilename());
-            model.addAttribute("parentName",
-                    parentName.isEmpty() ? categoryFromDb.getParentCategory() : parentName);
+            model.addAttribute("categoryDto", categoryDto);
 
         } catch (IOException e) {
             e.printStackTrace();
