@@ -20,11 +20,11 @@
     <br>
 
     <label>Name: </label>
-    <input type="text" name="categoryName" th:field="${categoryDto.categoryName}">
+    <input type="text" name="categoryName" th:field="${categoryDto.categoryName}" required>
     <br>
 
     <label>Image: </label>
-    <select name="imageName" id="imageName" th:field="${categoryDto.uploadedImageName}">
+    <select name="imageName" id="imageName" th:field="${categoryDto.uploadedImageName}" required>
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"

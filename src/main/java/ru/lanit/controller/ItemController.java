@@ -11,15 +11,16 @@ import ru.lanit.model.criteria.ItemSearchCriteria;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.item.ItemService;
 
+
 @Controller
 public class ItemController {
 
-    private final ItemService service;
+    private final ItemService itemService;
     private final CategoryService categoryService;
 
     @Autowired
-    public ItemController(ItemService service, CategoryService categoryService) {
-        this.service = service;
+    public ItemController(ItemService itemService, CategoryService categoryService) {
+        this.itemService = itemService;
         this.categoryService = categoryService;
     }
 
@@ -27,10 +28,10 @@ public class ItemController {
     public String allItems(ItemPage itemPage,
                            ItemSearchCriteria itemSearchCriteria,
                            Model model) {
-        model.addAttribute("criteria", service.getItems(itemPage, itemSearchCriteria));
+        model.addAttribute("criteria", itemService.getItems(itemPage, itemSearchCriteria));
         model.addAttribute("colors", Color.values());
         model.addAttribute("itemPage", itemPage);
-        model.addAttribute("categories", categoryService.findAllSubCategories());
+        model.addAttribute("categories", categoryService.displaySubCategoryUniqueNames());
         model.addAttribute("parentCategories", categoryService.findAllParentCategories());
 
         return "criteriaList";
@@ -40,7 +41,7 @@ public class ItemController {
     public String allItemsBySubCategory(@PathVariable("subCategoryName") String subCategoryName,
                                         @PathVariable("parentCategoryName") String parentCategory,
                                         Model model) {
-        model.addAttribute("items", service.findAllItemsBySubCategory(parentCategory, subCategoryName));
+        model.addAttribute("items", itemService.findAllItemsBySubCategory(parentCategory, subCategoryName));
         return "listItems";
     }
 

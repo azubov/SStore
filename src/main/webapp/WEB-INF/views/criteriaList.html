@@ -47,13 +47,13 @@
     </div>
 
     <div>
-        <label>Category:</label>
+        <label>Sub Category:</label>
         <select th:name="category" type="text">
             <option value="">Any</option>
-            <option th:each="category : ${categories}"
-                    th:value="${category.name}"
-                    th:text="${category.name}"
-                    th:selected="${category.name == #request.getParameter('category')}"
+            <option th:each="name : ${categories}"
+                    th:value="${name}"
+                    th:text="${name}"
+                    th:selected="${name == #request.getParameter('category')}"
             >Category</option>
         </select>
     </div>

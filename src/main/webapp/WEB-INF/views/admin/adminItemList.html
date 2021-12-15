@@ -20,6 +20,7 @@
         <th>Part Number</th>
         <th>Price</th>
         <th>Category</th>
+        <th>Parent Category</th>
         <th>Color</th>
         <th>Image Url</th>
         <th>Options</th>
@@ -32,6 +33,7 @@
         <td th:text="${item.getPartNumber()}">
         <td th:text="${item.getPrice()}">
         <td th:text="${item.getCategory().getName()}">
+        <td th:text="${item.getCategory().getParentCategoryName()}">
         <td th:text="${item.getColor()}">
         <td th:text="${item.getImageUrl()}">
         <td>

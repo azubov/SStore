@@ -12,6 +12,7 @@ public class ItemDto {
     private String partNumber;
     private String price;
     private String categoryName;
+    private String parentCategoryName;
     private String chosenColor;
     private String uploadedImageName;
 
@@ -29,6 +30,9 @@ public class ItemDto {
         }
         if (this.categoryName == null) {
             this.categoryName = itemFromDb.getCategory().getName();
+        }
+        if (this.parentCategoryName == null) {
+            this.parentCategoryName = itemFromDb.getCategory().getParentCategoryName();
         }
         if (this.chosenColor == null) {
             this.chosenColor = itemFromDb.getColor();

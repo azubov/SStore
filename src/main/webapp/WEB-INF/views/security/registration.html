@@ -19,7 +19,7 @@
     <div>
         <div th:if="${nameError}" class="alert alert-danger" th:text="${nameError}">Error</div>
         <label>Name: </label>
-        <input type="text" th:field="*{name}"/>
+        <input type="text" th:field="*{name}" required/>
     </div>
 
     <div>
@@ -29,7 +29,7 @@
 
     <div>
         <label>Password: </label>
-        <input type="password" th:field="*{password}"/>
+        <input type="password" th:field="*{password}" required/>
     </div>
 
     <div>

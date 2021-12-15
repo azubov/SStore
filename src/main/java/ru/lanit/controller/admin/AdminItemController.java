@@ -33,7 +33,7 @@ public class AdminItemController {
 
     @GetMapping("/new")
     public String showNewPage(Model model, ItemDto itemDto) {
-        model.addAttribute("categoryList", categoryService.findAllSubCategories());
+        model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
         model.addAttribute("colors", Color.values());
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("itemDto", itemDto);
@@ -52,16 +52,13 @@ public class AdminItemController {
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdatePage(Model model,
-                                 @PathVariable("id") Long id,
-                                 ItemDto itemDto) {
+    public String showUpdatePage(Model model, @PathVariable("id") Long id, ItemDto itemDto) {
 
         Item itemFromDb = itemService.findById(id);
-
         itemDto.populateWith(itemFromDb);
 
         model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("categoryList", categoryService.findAllSubCategories());
+        model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
         model.addAttribute("colors", Color.values());
         model.addAttribute("itemDto", itemDto);
 
@@ -69,9 +66,7 @@ public class AdminItemController {
     }
 
     @PostMapping("/update/{id}")
-    public String update(
-                         @PathVariable("id") Long id,
-                         ItemDto itemDto,
+    public String update(@PathVariable("id") Long id, ItemDto itemDto,
                          @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
         Item item = itemService.findById(id);

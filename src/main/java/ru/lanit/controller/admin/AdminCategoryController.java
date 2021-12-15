@@ -38,6 +38,7 @@ public class AdminCategoryController {
     public String create(CategoryDto categoryDto) {
 
         Category category = new Category();
+
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
         } else {
@@ -52,11 +53,14 @@ public class AdminCategoryController {
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model, @PathVariable("id") Long id, CategoryDto categoryDto) {
+
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("parentList", categoryService.findAllParentCategories());
+
         Category categoryFromDb = categoryService.findById(id);
         categoryDto.populateWith(categoryFromDb);
         model.addAttribute("categoryDto", categoryDto);
+
         return "admin/adminCategoryUpdate";
     }
 
@@ -64,6 +68,7 @@ public class AdminCategoryController {
     public String update(@PathVariable("id") Long id, CategoryDto categoryDto) {
 
         Category category = categoryService.findById(id);
+
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
         } else {

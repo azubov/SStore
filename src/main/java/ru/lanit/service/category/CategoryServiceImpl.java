@@ -8,6 +8,7 @@ import ru.lanit.repository.CategoryRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -65,5 +66,9 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findAllSubCategories();
     }
 
+    @Override
+    public List<String> displaySubCategoryUniqueNames() {
+        return findAllSubCategories().stream().map(Category::getName).distinct().collect(Collectors.toList());
+    }
 }
 

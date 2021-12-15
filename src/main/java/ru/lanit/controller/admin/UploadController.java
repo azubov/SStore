@@ -34,8 +34,7 @@ public class UploadController {
     }
 
     @PostMapping("/admin/category/uploadImage/new")
-    public String uploadImageCategoryNew(Model model,
-                                         CategoryDto categoryDto,
+    public String uploadImageCategoryNew(Model model, CategoryDto categoryDto,
                                          @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
@@ -54,11 +53,8 @@ public class UploadController {
     }
 
     @PostMapping("/admin/category/uploadImage/update/{id}")
-    public String uploadImagCategoryUpdate(Model model,
-                                           @PathVariable("id") Long id,
-                                           CategoryDto categoryDto,
+    public String uploadImagCategoryUpdate(Model model, @PathVariable("id") Long id, CategoryDto categoryDto,
                                            @RequestParam("imageFile") MultipartFile imageFile) {
-
         try {
             uploadService.saveImage(imageFile);
 
@@ -79,18 +75,18 @@ public class UploadController {
     }
 
     @PostMapping("/admin/item/uploadImage/new")
-    public String uploadImageItemNew(Model model,
-                                     ItemDto itemDto,
+    public String uploadImageItemNew(Model model, ItemDto itemDto,
                                      @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
 
-            model.addAttribute("categoryList", categoryService.findAllSubCategories());
+            model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
             model.addAttribute("colors", Color.values());
             model.addAttribute("imageSet", ImageSet.getImages());
 
             itemDto.setUploadedImageName(imageFile.getOriginalFilename());
             model.addAttribute("itemDto", itemDto);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,11 +95,8 @@ public class UploadController {
     }
 
     @PostMapping("/admin/item/uploadImage/update/{id}")
-    public String uploadImagCategoryUpdate(Model model,
-                                           @PathVariable("id") Long id,
-                                           ItemDto itemDto,
+    public String uploadImagCategoryUpdate(Model model, @PathVariable("id") Long id, ItemDto itemDto,
                                            @RequestParam("imageFile") MultipartFile imageFile) {
-
         try {
             uploadService.saveImage(imageFile);
             Item itemFromDb = itemService.findById(id);
@@ -111,7 +104,7 @@ public class UploadController {
             itemDto.setUploadedImageName(imageFile.getOriginalFilename());
 
             model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("categoryList", categoryService.findAllSubCategories());
+            model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
             model.addAttribute("colors", Color.values());
             model.addAttribute("itemDto", itemDto);
 

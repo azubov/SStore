@@ -13,23 +13,23 @@ import ru.lanit.service.category.CategoryService;
 @RequestMapping("/category")
 public class CategoryController {
 
-    private final CategoryService service;
+    private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryService service) {
-        this.service = service;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     public String allCategories(Model model) {
-        model.addAttribute("categories", service.findAllParentCategories());
+        model.addAttribute("categories", categoryService.findAllParentCategories());
         return "listCategories";
     }
 
     @GetMapping("/{categoryName}")
     public String allSubCategories(@PathVariable("categoryName") String categoryName, Model model) {
-        Category parentCategory = service.findByName(categoryName);
-        model.addAttribute("categories", service.findAllSubsByParentCategory(parentCategory));
+        Category parentCategory = categoryService.findByName(categoryName);
+        model.addAttribute("categories", categoryService.findAllSubsByParentCategory(parentCategory));
         return "listSubCategories";
     }
 

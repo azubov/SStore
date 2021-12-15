@@ -20,29 +20,29 @@
     <br>
 
     <label>Name: </label>
-    <input type="text" name="itemName" th:field="${itemDto.itemName}">
+    <input type="text" name="itemName" th:field="${itemDto.itemName}" required>
     <br>
 
     <label>Part Number: </label>
-    <input type="text" name="partNumber" th:field="${itemDto.partNumber}">
+    <input type="text" name="partNumber" th:field="${itemDto.partNumber}" required>
     <br>
 
     <label>Price: </label>
-    <input name="price" th:field="${itemDto.price}">
+    <input name="price" th:field="${itemDto.price}" required>
     <br>
 
     <label>Category: </label>
-    <select name="categoryName" th:field="${itemDto.categoryName}">
+    <select name="categoryName" th:field="${itemDto.categoryName}" required>
         <option value="">Any</option>
-        <option th:each="category : ${categoryList}"
-                th:value="${category.getName()}"
-                th:text="${category.getName()}"
+        <option th:each="name : ${categoryList}"
+                th:value="${name}"
+                th:text="${name}"
         >Category</option>
     </select>
     <br>
 
     <label>Color: </label>
-    <select name="chosenColor" th:field="${itemDto.chosenColor}">
+    <select name="chosenColor" th:field="${itemDto.chosenColor}" required>
         <option value="">Any</option>
         <option th:each="color : ${colors}"
                 th:value="${color.getDisplayValue()}"
@@ -52,7 +52,7 @@
     <br>
 
     <label>Image: </label>
-    <select name="uploadedImageName" id="imageName" th:field="${itemDto.uploadedImageName}">
+    <select name="uploadedImageName" id="imageName" th:field="${itemDto.uploadedImageName}" required>
         <option value="">Any</option>
         <option th:each="image : ${imageSet}"
                 th:value="${image}"

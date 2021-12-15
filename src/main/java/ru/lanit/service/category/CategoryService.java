@@ -15,5 +15,6 @@ public interface CategoryService {
     List<Category> findAllParentCategories();
     List<Category> findAllSubsByParentCategory(Category parentCategory);
     List<Category> findAllSubCategories();
+    List<String> displaySubCategoryUniqueNames();
 
 }

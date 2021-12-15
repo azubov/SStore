@@ -12,11 +12,11 @@ import ru.lanit.service.user.UserService;
 @Controller
 public class RegistrationController {
 
-    private final UserService service;
+    private final UserService userService;
 
     @Autowired
-    public RegistrationController(UserService service) {
-        this.service = service;
+    public RegistrationController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/registration")
@@ -28,19 +28,19 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String register(User user, Model model) {
-        if (service.existsUserByName(user.getName())) {
+        if (userService.existsUserByName(user.getName())) {
             model.addAttribute("nameError", "User with such name already exists");
             model.addAttribute("user", new User());
             model.addAttribute("roles", Role.values());
             return "security/registration";
         }
-        service.save(user);
+        userService.save(user);
         return "redirect:/auth/login";
     }
 
     @GetMapping("/users")
     public String users(Model model) {
-        model.addAttribute("users", service.findAll());
+        model.addAttribute("users", userService.findAll());
         return "security/users";
     }
 }

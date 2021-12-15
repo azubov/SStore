@@ -15,7 +15,6 @@ import ru.lanit.service.user.UserService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/user/cart")
 public class UserCartController {
