@@ -18,6 +18,7 @@ import ru.lanit.service.item.ItemService;
 import ru.lanit.service.upload.UploadService;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class UploadController {
@@ -38,12 +39,8 @@ public class UploadController {
                                          @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
-
-            model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("parentList", categoryService.findAllParentCategories());
-
             categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
-            model.addAttribute("categoryDto", categoryDto);
+            categoryService.bindCategory(model, categoryDto);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,14 +55,13 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
-            model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("parentList", categoryService.findAllParentCategories());
-            model.addAttribute("id", id);
-
             Category categoryFromDb = categoryService.findById(id);
             categoryDto.populateWith(categoryFromDb);
+
             categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
-            model.addAttribute("categoryDto", categoryDto);
+            categoryService.bindCategory(model, categoryDto);
+
+            model.addAttribute("id", id);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -80,12 +76,10 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
-            model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
-            model.addAttribute("colors", Color.values());
-            model.addAttribute("imageSet", ImageSet.getImages());
-
             itemDto.setUploadedImageName(imageFile.getOriginalFilename());
-            model.addAttribute("itemDto", itemDto);
+            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
+
+            itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -102,11 +96,9 @@ public class UploadController {
             Item itemFromDb = itemService.findById(id);
             itemDto.populateWith(itemFromDb);
             itemDto.setUploadedImageName(imageFile.getOriginalFilename());
+            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
 
-            model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
-            model.addAttribute("colors", Color.values());
-            model.addAttribute("itemDto", itemDto);
+            itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {
             e.printStackTrace();

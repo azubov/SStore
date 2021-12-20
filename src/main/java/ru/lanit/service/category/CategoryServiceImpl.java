@@ -88,9 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void bindWithError(Model model, CategoryDto categoryDto) {
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("parentList", findAllParentCategories());
-        model.addAttribute("categoryDto", categoryDto);
+        bindCategory(model, categoryDto);
         model.addAttribute("nameError", "Category with such name already exists");
     }
 
