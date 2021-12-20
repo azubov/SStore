@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.service.category.CategoryService;
@@ -28,47 +27,32 @@ public class AdminCategoryController {
 
     @GetMapping("/new")
     public String showNewPage(Model model, CategoryDto categoryDto) {
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("parentList", categoryService.findAllParentCategories());
-        model.addAttribute("categoryDto", categoryDto);
+        categoryService.bindCategory(model, categoryDto);
         return "admin/adminCategoryNew";
     }
 
     @PostMapping("/new")
     public String create(Model model, CategoryDto categoryDto) {
 
-        if (categoryService.existsCategoryByName(categoryDto.getCategoryName())) {
-            model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("parentList", categoryService.findAllParentCategories());
-            model.addAttribute("categoryDto", categoryDto);
-            model.addAttribute("nameError", "Category with such name already exists");
-            return "admin/adminCategoryNew";
+        String nameFromInput = categoryDto.getCategoryName();
+
+        if (categoryService.existsCategoryByName(nameFromInput)) {
+            categoryService.bindWithError(model, categoryDto);
+             return "admin/adminCategoryNew";
         }
 
         Category category = new Category();
-
-        if (categoryDto.getParentName().isEmpty()) {
-            category.populateWith(categoryDto, null);
-        } else {
-            Category parentCategory = categoryService.findByName(categoryDto.getParentName());
-            category.populateWith(categoryDto, parentCategory);
-        }
-
+        categoryService.populateParentCategory(categoryDto, category);
         categoryService.save(category);
-
         return "redirect:/admin/category";
     }
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model, @PathVariable("id") Long id, CategoryDto categoryDto) {
 
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("parentList", categoryService.findAllParentCategories());
-
         Category categoryFromDb = categoryService.findById(id);
         categoryDto.populateWith(categoryFromDb);
-        model.addAttribute("categoryDto", categoryDto);
-
+        categoryService.bindCategory(model, categoryDto);
         return "admin/adminCategoryUpdate";
     }
 
@@ -76,25 +60,17 @@ public class AdminCategoryController {
     public String update(Model model, @PathVariable("id") Long id, CategoryDto categoryDto) {
 
         Category category = categoryService.findById(id);
+        String nameFromInput = categoryDto.getCategoryName();
+        String currentName = category.getName();
 
-        if (categoryService.existsCategoryByName(categoryDto.getCategoryName())) {
-            model.addAttribute("imageSet", ImageSet.getImages());
-            model.addAttribute("parentList", categoryService.findAllParentCategories());
+        if (categoryService.existsCategoryByName(nameFromInput) && !nameFromInput.equals(currentName)) {
+            categoryService.bindWithError(model, categoryDto);
             categoryDto.populateWith(category);
-            model.addAttribute("categoryDto", categoryDto);
-            model.addAttribute("nameError", "Category with such name already exists");
             return "admin/adminCategoryUpdate";
         }
 
-        if (categoryDto.getParentName().isEmpty()) {
-            category.populateWith(categoryDto, null);
-        } else {
-            Category parentCategory = categoryService.findByName(categoryDto.getParentName());
-            category.populateWith(categoryDto, parentCategory);
-        }
-
+        categoryService.populateParentCategory(categoryDto, category);
         categoryService.save(category);
-
         return "redirect:/admin/category";
     }
 

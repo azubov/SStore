@@ -1,5 +1,7 @@
 package ru.lanit.service.category;
 
+import org.springframework.ui.Model;
+import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.model.entity.Category;
 
 import java.util.List;
@@ -18,4 +20,7 @@ public interface CategoryService {
     List<String> displaySubCategoryUniqueNames();
     boolean existsCategoryByName(String name);
 
+    void bindCategory(Model model, CategoryDto categoryDto);
+    void bindWithError(Model model, CategoryDto categoryDto);
+    void populateParentCategory(CategoryDto categoryDto, Category category);
 }

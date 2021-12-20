@@ -2,6 +2,9 @@ package ru.lanit.service.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import ru.lanit.model.dto.CategoryDto;
+import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
 import ru.lanit.repository.CategoryRepository;
 
@@ -74,6 +77,31 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public boolean existsCategoryByName(String name) {
         return repository.existsCategoryByName(name);
+    }
+
+    @Override
+    public void bindCategory(Model model, CategoryDto categoryDto) {
+        model.addAttribute("imageSet", ImageSet.getImages());
+        model.addAttribute("parentList", findAllParentCategories());
+        model.addAttribute("categoryDto", categoryDto);
+    }
+
+    @Override
+    public void bindWithError(Model model, CategoryDto categoryDto) {
+        model.addAttribute("imageSet", ImageSet.getImages());
+        model.addAttribute("parentList", findAllParentCategories());
+        model.addAttribute("categoryDto", categoryDto);
+        model.addAttribute("nameError", "Category with such name already exists");
+    }
+
+    @Override
+    public void populateParentCategory(CategoryDto categoryDto, Category category) {
+        if (categoryDto.getParentName().isEmpty()) {
+            category.populateWith(categoryDto, null);
+        } else {
+            Category parentCategory = findByName(categoryDto.getParentName());
+            category.populateWith(categoryDto, parentCategory);
+        }
     }
 }
 
