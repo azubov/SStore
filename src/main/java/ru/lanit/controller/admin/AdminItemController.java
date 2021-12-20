@@ -12,6 +12,8 @@ import ru.lanit.model.entity.Item;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.item.ItemService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin/item")
 public class AdminItemController {
@@ -33,10 +35,11 @@ public class AdminItemController {
 
     @GetMapping("/new")
     public String showNewPage(Model model, ItemDto itemDto) {
-        model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
-        model.addAttribute("colors", Color.values());
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("itemDto", itemDto);
+
+        List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
+
+        itemService.bindItem(model, itemDto, categoryList);
+
         return "admin/adminItemNew";
     }
 
@@ -45,6 +48,7 @@ public class AdminItemController {
 
         Category category = categoryService.findByName(itemDto.getCategoryName());
         Item item = new Item();
+
         item.populateWith(itemDto, category);
         itemService.save(item);
 
@@ -57,10 +61,8 @@ public class AdminItemController {
         Item itemFromDb = itemService.findById(id);
         itemDto.populateWith(itemFromDb);
 
-        model.addAttribute("imageSet", ImageSet.getImages());
-        model.addAttribute("categoryList", categoryService.displaySubCategoryUniqueNames());
-        model.addAttribute("colors", Color.values());
-        model.addAttribute("itemDto", itemDto);
+        List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
+        itemService.bindItem(model, itemDto, categoryList);
 
         return "admin/adminItemUpdate";
     }
@@ -72,6 +74,7 @@ public class AdminItemController {
         Item item = itemService.findById(id);
         Category category = categoryService.findByName(itemDto.getCategoryName());
         item.populateWith(itemDto, category);
+
         itemService.save(item);
 
         return "redirect:/admin/item";

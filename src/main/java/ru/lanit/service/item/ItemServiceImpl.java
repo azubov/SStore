@@ -3,8 +3,12 @@ package ru.lanit.service.item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import ru.lanit.model.criteria.ItemPage;
 import ru.lanit.model.criteria.ItemSearchCriteria;
+import ru.lanit.model.dto.Color;
+import ru.lanit.model.dto.ImageSet;
+import ru.lanit.model.dto.ItemDto;
 import ru.lanit.model.entity.Item;
 import ru.lanit.repository.ItemRepository;
 import ru.lanit.repository.criteria.ItemCriteriaRepository;
@@ -59,5 +63,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public void bindItem(Model model, ItemDto itemDto, List<String> categoryList) {
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("colors", Color.values());
+        model.addAttribute("imageSet", ImageSet.getImages());
+        model.addAttribute("itemDto", itemDto);
     }
 }
