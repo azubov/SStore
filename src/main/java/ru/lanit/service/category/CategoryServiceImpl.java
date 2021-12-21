@@ -3,6 +3,7 @@ package ru.lanit.service.category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import ru.lanit.errors.ErrorType;
 import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.entity.Category;
@@ -89,7 +90,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void bindWithError(Model model, CategoryDto categoryDto) {
         bindCategory(model, categoryDto);
-        model.addAttribute("nameError", "Category with such name already exists");
+        model.addAttribute("nameError", ErrorType.NAME_ALREADY_EXISTS.getDescription());
     }
 
     @Override

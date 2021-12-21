@@ -1,5 +1,6 @@
 package ru.lanit.controller.admin;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.lanit.model.dto.Color;
-import ru.lanit.model.dto.ImageSet;
+import ru.lanit.errors.ErrorType;
 import ru.lanit.model.dto.ItemDto;
 import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
@@ -20,6 +20,7 @@ import ru.lanit.service.upload.UploadService;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Controller
 public class UploadController {
 
@@ -43,6 +44,7 @@ public class UploadController {
             categoryService.bindCategory(model, categoryDto);
 
         } catch (IOException e) {
+            log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
             e.printStackTrace();
         }
 
@@ -57,13 +59,12 @@ public class UploadController {
 
             Category categoryFromDb = categoryService.findById(id);
             categoryDto.populateWith(categoryFromDb);
-
             categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
+
             categoryService.bindCategory(model, categoryDto);
 
-            model.addAttribute("id", id);
-
         } catch (IOException e) {
+            log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
             e.printStackTrace();
         }
 
@@ -82,6 +83,7 @@ public class UploadController {
             itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {
+            log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
             e.printStackTrace();
         }
 
@@ -93,6 +95,7 @@ public class UploadController {
                                            @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
+
             Item itemFromDb = itemService.findById(id);
             itemDto.populateWith(itemFromDb);
             itemDto.setUploadedImageName(imageFile.getOriginalFilename());
@@ -101,6 +104,7 @@ public class UploadController {
             itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {
+            log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
             e.printStackTrace();
         }
 

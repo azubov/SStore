@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.lanit.errors.ErrorType;
 import ru.lanit.model.entity.Role;
 import ru.lanit.model.entity.User;
 import ru.lanit.service.user.UserService;
@@ -29,7 +30,7 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String register(User user, Model model) {
         if (userService.existsUserByName(user.getName())) {
-            model.addAttribute("nameError", "User with such name already exists");
+            model.addAttribute("nameError", ErrorType.NAME_ALREADY_EXISTS.getDescription());
             model.addAttribute("user", new User());
             model.addAttribute("roles", Role.values());
             return "security/registration";
