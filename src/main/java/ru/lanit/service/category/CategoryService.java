@@ -22,5 +22,8 @@ public interface CategoryService {
 
     void bindCategory(Model model, CategoryDto categoryDto);
     void bindWithError(Model model, CategoryDto categoryDto);
+    void bindCategoryWithImage(Model model, CategoryDto categoryDto, String imageName);
     void populateParentCategory(CategoryDto categoryDto, Category category);
+    Category createCategoryFrom(CategoryDto categoryDto);
+    void bindDto(CategoryDto categoryDto, Long id);
 }

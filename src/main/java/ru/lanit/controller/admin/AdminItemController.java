@@ -44,10 +44,11 @@ public class AdminItemController {
     @PostMapping("/new")
     public String create(ItemDto itemDto) {
 
-        Category category = categoryService.findByName(itemDto.getCategoryName());
-        Item item = new Item();
+        String categoryFromInput = itemDto.getCategoryName();
+        Category category = categoryService.findByName(categoryFromInput);
 
-        item.populateWith(itemDto, category);
+        Item item = itemService.createItemFrom(itemDto, category);
+
         itemService.save(item);
 
         return "redirect:/admin/item";
@@ -56,8 +57,7 @@ public class AdminItemController {
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model, @PathVariable("id") Long id, ItemDto itemDto) {
 
-        Item itemFromDb = itemService.findById(id);
-        itemDto.populateWith(itemFromDb);
+        itemService.bindDto(itemDto, id);
 
         List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
         itemService.bindItem(model, itemDto, categoryList);
@@ -69,9 +69,10 @@ public class AdminItemController {
     public String update(@PathVariable("id") Long id, ItemDto itemDto,
                          @ModelAttribute("uploadedImageName") String uploadedImageName) {
 
-        Item item = itemService.findById(id);
-        Category category = categoryService.findByName(itemDto.getCategoryName());
-        item.populateWith(itemDto, category);
+        String categoryFromInput = itemDto.getCategoryName();
+        Category category = categoryService.findByName(categoryFromInput);
+
+        Item item = itemService.findItemAndPopulateWith(id, itemDto, category);
 
         itemService.save(item);
 

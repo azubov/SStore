@@ -15,6 +15,7 @@ import ru.lanit.service.user.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user/cart")
@@ -35,18 +36,23 @@ public class UserCartController {
 
     @GetMapping
     public String showAll(Model model) {
-        Cart cart = cartService.getCart(userService.getCurrentUser());
 
-        model.addAttribute("cart", cart.getAll());
+        User currentUser = userService.getCurrentUser();
+        Cart cart = cartService.getCart(currentUser);
+        Map<Item, Integer> itemsMapFromCart = cartService.getItemsMap(cart);
+
+        model.addAttribute("cart", itemsMapFromCart);
         return "user/userCartList";
     }
 
     @PostMapping("/add/{id}")
     public String add(@PathVariable("id") Long id, int quantity, HttpServletRequest request) {
-        Cart cart = cartService.getCart(userService.getCurrentUser());
 
+        User currentUser = userService.getCurrentUser();
+        Cart cart = cartService.getCart(currentUser);
         Item item = itemService.findById(id);
-        cart.add(item, quantity);
+
+        cartService.add(cart, item, quantity);
         cartService.save(cart);
 
         String referer = request.getHeader("Referer");
@@ -55,19 +61,14 @@ public class UserCartController {
 
     @GetMapping("/order")
     public String makeOrder(Model model) {
-        Cart cart = cartService.getCart(userService.getCurrentUser());
-
-        Order order = new Order();
-
-        List<Item> itemsFromCart = cart.getItemsFromCart();
-        order.setItems(itemsFromCart);
 
         User currentUser = userService.getCurrentUser();
-        order.setUser(currentUser);
+        Cart cart = cartService.getCart(currentUser);
+        Order order = orderService.makeOrderFrom(cart, currentUser);
 
         orderService.save(order);
 
-        cart.clear();
+        cartService.clear(cart);
         cartService.save(cart);
 
         return "redirect:/user/cart/orders";
@@ -75,8 +76,12 @@ public class UserCartController {
 
     @GetMapping("/orders")
     public String showOrders(Model model) {
+
         User currentUser = userService.getCurrentUser();
-        model.addAttribute("orders", orderService.findAllByUser(currentUser));
+        List<Order> ordersFromUser = orderService.findAllByUser(currentUser);
+
+        model.addAttribute("orders", ordersFromUser);
+
         return "orderList";
     }
 }

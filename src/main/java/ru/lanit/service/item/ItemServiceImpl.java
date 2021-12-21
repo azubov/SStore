@@ -9,6 +9,7 @@ import ru.lanit.model.criteria.ItemSearchCriteria;
 import ru.lanit.model.dto.Color;
 import ru.lanit.model.dto.ImageSet;
 import ru.lanit.model.dto.ItemDto;
+import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 import ru.lanit.repository.ItemRepository;
 import ru.lanit.repository.criteria.ItemCriteriaRepository;
@@ -71,5 +72,30 @@ public class ItemServiceImpl implements ItemService {
         model.addAttribute("colors", Color.values());
         model.addAttribute("imageSet", ImageSet.getImages());
         model.addAttribute("itemDto", itemDto);
+    }
+
+    @Override
+    public Item createItemFrom(ItemDto itemDto, Category category) {
+        Item item = new Item();
+        item.populateWith(itemDto, category);
+        return item;
+    }
+
+    @Override
+    public void bindDto(ItemDto itemDto, Long id) {
+        Item itemFromDb = findById(id);
+        itemDto.populateWith(itemFromDb);
+    }
+
+    @Override
+    public Item findItemAndPopulateWith(Long id, ItemDto itemDto, Category category) {
+        Item item = findById(id);
+        item.populateWith(itemDto, category);
+        return item;
+    }
+
+    @Override
+    public void bindDtoWithImage(ItemDto itemDto, String imageName) {
+        itemDto.setUploadedImageName(imageName);
     }
 }

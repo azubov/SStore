@@ -38,20 +38,19 @@ public class AdminCategoryController {
 
         if (categoryService.existsCategoryByName(nameFromInput)) {
             categoryService.bindWithError(model, categoryDto);
-             return "admin/adminCategoryNew";
+            return "admin/adminCategoryNew";
         }
 
-        Category category = new Category();
-        categoryService.populateParentCategory(categoryDto, category);
+        Category category = categoryService.createCategoryFrom(categoryDto);
+
         categoryService.save(category);
+
         return "redirect:/admin/category";
     }
 
     @GetMapping("/update/{id}")
     public String showUpdatePage(Model model, @PathVariable("id") Long id, CategoryDto categoryDto) {
-
-        Category categoryFromDb = categoryService.findById(id);
-        categoryDto.populateWith(categoryFromDb);
+        categoryService.bindDto(categoryDto, id);
         categoryService.bindCategory(model, categoryDto);
         return "admin/adminCategoryUpdate";
     }
@@ -65,7 +64,7 @@ public class AdminCategoryController {
 
         if (categoryService.existsCategoryByName(nameFromInput) && !nameFromInput.equals(currentName)) {
             categoryService.bindWithError(model, categoryDto);
-            categoryDto.populateWith(category);
+            categoryService.bindDto(categoryDto, id);
             return "admin/adminCategoryUpdate";
         }
 

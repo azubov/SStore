@@ -94,6 +94,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public void bindCategoryWithImage(Model model, CategoryDto categoryDto, String imageName) {
+        categoryDto.setUploadedImageName(imageName);
+        bindCategory(model, categoryDto);
+    }
+
+    @Override
     public void populateParentCategory(CategoryDto categoryDto, Category category) {
         if (categoryDto.getParentName().isEmpty()) {
             category.populateWith(categoryDto, null);
@@ -101,6 +107,19 @@ public class CategoryServiceImpl implements CategoryService {
             Category parentCategory = findByName(categoryDto.getParentName());
             category.populateWith(categoryDto, parentCategory);
         }
+    }
+
+    @Override
+    public Category createCategoryFrom(CategoryDto categoryDto) {
+        Category category = new Category();
+        populateParentCategory(categoryDto, category);
+        return category;
+    }
+
+    @Override
+    public void bindDto(CategoryDto categoryDto, Long id) {
+        Category categoryFromDb = findById(id);
+        categoryDto.populateWith(categoryFromDb);
     }
 }
 

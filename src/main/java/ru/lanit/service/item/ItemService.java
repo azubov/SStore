@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import ru.lanit.model.criteria.ItemPage;
 import ru.lanit.model.criteria.ItemSearchCriteria;
 import ru.lanit.model.dto.ItemDto;
+import ru.lanit.model.entity.Category;
 import ru.lanit.model.entity.Item;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface ItemService {
     void deleteById(Long id);
 
     void bindItem(Model model, ItemDto itemDto, List<String> categoryList);
+    Item createItemFrom(ItemDto itemDto, Category category);
+    void bindDto(ItemDto itemDto, Long id);
+    Item findItemAndPopulateWith(Long id, ItemDto itemDto, Category category);
+    void bindDtoWithImage(ItemDto itemDto, String imageName);
 }

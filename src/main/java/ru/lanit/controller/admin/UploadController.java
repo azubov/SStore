@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import ru.lanit.errors.ErrorType;
 import ru.lanit.model.dto.ItemDto;
-import ru.lanit.model.entity.Category;
-import ru.lanit.model.entity.Item;
 import ru.lanit.model.dto.CategoryDto;
 import ru.lanit.service.category.CategoryService;
 import ru.lanit.service.item.ItemService;
@@ -40,8 +38,8 @@ public class UploadController {
                                          @RequestParam("imageFile") MultipartFile imageFile) {
         try {
             uploadService.saveImage(imageFile);
-            categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
-            categoryService.bindCategory(model, categoryDto);
+
+            categoryService.bindCategoryWithImage(model, categoryDto, imageFile.getOriginalFilename());
 
         } catch (IOException e) {
             log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
@@ -57,11 +55,8 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
-            Category categoryFromDb = categoryService.findById(id);
-            categoryDto.populateWith(categoryFromDb);
-            categoryDto.setUploadedImageName(imageFile.getOriginalFilename());
-
-            categoryService.bindCategory(model, categoryDto);
+            categoryService.bindDto(categoryDto, id);
+            categoryService.bindCategoryWithImage(model, categoryDto, imageFile.getOriginalFilename());
 
         } catch (IOException e) {
             log.error(ErrorType.IMAGE_NOT_SAVED.getDescription(), e.getMessage());
@@ -77,9 +72,9 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
-            itemDto.setUploadedImageName(imageFile.getOriginalFilename());
-            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
+            itemService.bindDtoWithImage(itemDto, imageFile.getOriginalFilename());
 
+            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
             itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {
@@ -96,11 +91,10 @@ public class UploadController {
         try {
             uploadService.saveImage(imageFile);
 
-            Item itemFromDb = itemService.findById(id);
-            itemDto.populateWith(itemFromDb);
-            itemDto.setUploadedImageName(imageFile.getOriginalFilename());
-            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
+            itemService.bindDto(itemDto, id);
+            itemService.bindDtoWithImage(itemDto, imageFile.getOriginalFilename());
 
+            List<String> categoryList = categoryService.displaySubCategoryUniqueNames();
             itemService.bindItem(model, itemDto, categoryList);
 
         } catch (IOException e) {

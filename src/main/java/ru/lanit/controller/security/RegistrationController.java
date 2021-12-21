@@ -22,20 +22,28 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
+
         model.addAttribute("user", new User());
         model.addAttribute("roles", Role.values());
+
         return "security/registration";
     }
 
     @PostMapping("/registration")
     public String register(User user, Model model) {
-        if (userService.existsUserByName(user.getName())) {
+
+        String currentUserName = user.getName();
+
+        if (userService.existsUserByName(currentUserName)) {
             model.addAttribute("nameError", ErrorType.NAME_ALREADY_EXISTS.getDescription());
             model.addAttribute("user", new User());
             model.addAttribute("roles", Role.values());
+
             return "security/registration";
         }
+
         userService.save(user);
+
         return "redirect:/auth/login";
     }
 
